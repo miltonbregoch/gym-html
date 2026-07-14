@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano Hipertrofia — 65kg / 1,73m</title>
+<style>
+  :root{
+    --bg:#0f1210;
+    --panel:#171b18;
+    --panel2:#1e2420;
+    --line:#2a322c;
+    --text:#e7ece8;
+    --muted:#8fa096;
+    --accent:#5fbf7a;
+    --accent2:#e0a458;
+    --danger:#d97060;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  button, .navbtn, .daytab, input[type=checkbox], label, a{
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:rgba(95,191,122,.25);
+  }
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    display:flex; min-height:100vh;
+  }
+  /* Sidebar */
+  nav{
+    width:210px; background:var(--panel); border-right:1px solid var(--line);
+    padding:20px 0; position:sticky; top:0; height:100vh; flex-shrink:0;
+  }
+  nav h1{font-size:15px; padding:0 20px 16px; margin:0; color:var(--accent); letter-spacing:.5px;}
+  nav h1 span{display:block; font-size:11px; color:var(--muted); font-weight:400; margin-top:2px;}
+  .navbtn{
+    display:block; width:100%; text-align:left; background:none; border:none; color:var(--muted);
+    padding:12px 20px; font-size:14px; cursor:pointer; border-left:3px solid transparent;
+  }
+  .navbtn:hover{color:var(--text); background:var(--panel2);}
+  .navbtn.active{color:var(--accent); border-left-color:var(--accent); background:var(--panel2); font-weight:600;}
+  main{flex:1; padding:28px 32px; max-width:980px;}
+  .page{display:none;}
+  .page.active{display:block;}
+  h2{margin-top:0; font-size:22px; border-bottom:1px solid var(--line); padding-bottom:10px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin:18px 0;}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px;}
+  .card .label{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;}
+  .card .value{font-size:26px; font-weight:700; margin-top:6px;}
+  .card .value.accent{color:var(--accent);}
+  .bar-outer{background:var(--panel2); border-radius:6px; height:8px; margin-top:10px; overflow:hidden;}
+  .bar-inner{background:var(--accent); height:100%; width:0%; transition:width .3s;}
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14px;}
+  th,td{padding:10px 8px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top;}
+  th{color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase;}
+  tr:hover td{background:var(--panel2);}
+  .tip{color:var(--muted); font-size:12.5px;}
+  .daytabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px;}
+  .daytab{
+    background:var(--panel); border:1px solid var(--line); color:var(--muted);
+    padding:8px 14px; border-radius:20px; cursor:pointer; font-size:13px;
+  }
+  .daytab.active{background:var(--accent); color:#0f1210; border-color:var(--accent); font-weight:600;}
+  .daycontent{display:none;}
+  .daycontent.active{display:block;}
+  .meal{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; margin-bottom:10px;}
+  .meal h4{margin:0 0 6px; color:var(--accent2); font-size:13px; text-transform:uppercase; letter-spacing:.5px;}
+  .meal p{margin:0; font-size:14.5px; line-height:1.5;}
+  input[type=checkbox]{width:17px; height:17px; accent-color:var(--accent); cursor:pointer;}
+  @media (max-width:760px){
+    input[type=checkbox]{width:26px; height:26px;}
+  }
+  .video-link{color:var(--accent); text-decoration:none; font-size:12.5px;}
+  .video-link:hover{text-decoration:underline;}
+  .market-cat{margin-bottom:18px;}
+  .market-cat h3{color:var(--accent2); font-size:14px; margin-bottom:8px;}
+  .market-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px;}
+  .market-item{display:flex; align-items:center; gap:8px; font-size:14px; background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:7px 10px;}
+  .form-row{display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;}
+  .form-row input{background:var(--panel2); border:1px solid var(--line); color:var(--text); padding:8px 10px; border-radius:6px; font-size:14px;}
+  button.primary{background:var(--accent); color:#0f1210; border:none; padding:9px 16px; border-radius:6px; font-weight:600; cursor:pointer; font-size:14px;}
+  button.primary:hover{opacity:.9;}
+  canvas{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); max-width:100%;}
+  .note{background:#1e2420; border-left:3px solid var(--danger); padding:12px 14px; font-size:13px; color:var(--muted); border-radius:0 6px 6px 0; margin-top:16px;}
+  @media print{ nav{display:none;} main{max-width:100%;} .page{display:block !important;} }
+  @media (max-width:760px){
+    body{flex-direction:column;}
+    nav{width:100%; height:auto; position:sticky; top:0; z-index:10; display:flex; overflow-x:auto; padding:8px; gap:2px; -webkit-overflow-scrolling:touch; touch-action:pan-x;}
+    nav h1{display:none;}
+    .navbtn{white-space:nowrap; width:auto; display:inline-block; border-left:none; border-bottom:3px solid transparent; padding:14px 16px; font-size:14px; flex-shrink:0;}
+    .navbtn.active{border-left:none; border-bottom-color:var(--accent);}
+    main{padding:14px;}
+    .daytabs{position:sticky; top:0; background:var(--bg); z-index:5; padding:8px 0; margin:0 -14px 14px; padding-left:14px; padding-right:14px; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch;}
+    .daytab{flex-shrink:0; padding:12px 18px; font-size:14px;}
+    /* Tabelas viram cards empilhados no celular */
+    table thead{display:none;}
+    table, table tbody, table tr, table td{display:block; width:100%;}
+    table{border:none;}
+    table tr{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); margin-bottom:12px; padding:12px; position:relative;}
+    table td{border:none; padding:6px 0; display:flex; justify-content:space-between; align-items:center; gap:10px;}
+    table td:before{content:attr(data-label); color:var(--muted); font-size:11px; text-transform:uppercase; flex-shrink:0; min-width:90px;}
+    table td:first-child{justify-content:flex-start;}
+    table td:first-child:before{content:none;}
+    .card{padding:14px;}
+    .card .value{font-size:22px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>PLANO<span>Hipertrofia · Crohn</span></h1>
+  <button class="navbtn active" data-page="dashboard">🏠 Dashboard</button>
+  <button class="navbtn" data-page="treino">🏋️ Treino</button>
+  <button class="navbtn" data-page="alimentacao">🍽 Alimentação</button>
+  <button class="navbtn" data-page="mercado">🛒 Lista de Mercado</button>
+  <button class="navbtn" data-page="acompanhamento">📈 Acompanhamento</button>
+</nav>
+
+<main>
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+  <h2>Dashboard</h2>
+  <div class="grid">
+    <div class="card"><div class="label">Peso atual</div><div class="value" id="dashPeso">65 kg</div></div>
+    <div class="card"><div class="label">Meta de peso</div><div class="value accent">70 kg <span class="tip" id="dashPrazo">(em 8 sem)</span></div></div>
+    <div class="card"><div class="label">Altura</div><div class="value">1,73 m</div></div>
+    <div class="card"><div class="label">IMC (atual → meta)</div><div class="value" id="dashImc">21.7 → 23.4</div></div>
+    <div class="card"><div class="label">Meta de proteína/dia</div><div class="value accent" id="dashProteina">140 g</div><div class="tip">2g/kg do peso-alvo (70kg)</div></div>
+    <div class="card"><div class="label">Água recomendada</div><div class="value accent">2.6 L</div></div>
+    <div class="card"><div class="label">Progresso semanal de treino</div>
+      <div class="value" id="treinoPct">0%</div>
+      <div class="bar-outer"><div class="bar-inner" id="treinoBar"></div></div>
+    </div>
+    <div class="card"><div class="label">Progresso rumo à meta de peso</div>
+      <div class="value" id="pesoPct">0%</div>
+      <div class="bar-outer"><div class="bar-inner" id="pesoBar"></div></div>
+      <div class="tip" id="pesoRitmo"></div>
+    </div>
+  </div>
+
+  <h2 style="font-size:16px; border:none; margin-top:26px;">Checklist diário</h2>
+  <div class="grid">
+    <div class="card"><label><input type="checkbox" data-key="chk_treino"> Treino do dia feito</label></div>
+    <div class="card"><label><input type="checkbox" data-key="chk_agua"> Meta de água atingida</label></div>
+    <div class="card"><label><input type="checkbox" data-key="chk_creatina"> Creatina tomada</label></div>
+    <div class="card"><label><input type="checkbox" data-key="chk_dieta"> Dieta seguida</label></div>
+    <div class="card"><label><input type="checkbox" data-key="chk_sono"> Dormiu 7h+</label></div>
+  </div>
+  <button class="primary" style="background:none; border:1px solid var(--danger); color:var(--danger); margin-top:4px;" onclick="limparChecklist()">Limpar checklist do dia</button>
+
+  <div class="note">
+    <strong>Sobre a oxandrolona:</strong> este app não recomenda dose. Estruturei treino e dieta para funcionar sem depender do composto.
+    O uso de esteroides anabolizantes exige acompanhamento médico — especialmente com Crohn ativo, pelo risco de alteração hepática,
+    lipídica e supressão hormonal. Isso deve ser decidido e monitorado pelo seu gastroenterologista junto de um médico do esporte, com exames periódicos.
+  </div>
+</section>
+
+<!-- TREINO -->
+<section class="page" id="treino">
+  <h2>Treino — 3x por semana</h2>
+  <div class="daytabs">
+    <button class="daytab active" data-day="seg">Segunda — Peito/Ombro/Tríceps</button>
+    <button class="daytab" data-day="qua">Quarta — Costas/Bíceps</button>
+    <button class="daytab" data-day="sex">Sexta — Pernas + Abdômen</button>
+  </div>
+
+  <div class="daycontent active" id="seg">
+    <table>
+      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Supino reto (barra ou halteres)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Escápulas retraídas, barra desce até tocar o peito sem quicar. Trabalha peitoral maior.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=supino+reto+execu%C3%A7%C3%A3o" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Supino inclinado com halteres</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Banco a 30-45°. Foca porção clavicular do peitoral. Não travar o cotovelo no topo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=supino+inclinado+halteres" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Desenvolvimento de ombro (halteres)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Cotovelos levemente à frente do corpo, evita impacto excessivo no manguito rotador.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=desenvolvimento+ombro+halteres" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Elevação lateral</td><td data-label="Séries x Reps">3x15</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Subir até a linha do ombro, cotovelo levemente flexionado, sem balançar o tronco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+ombro" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Tríceps corda (polia)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Cotovelos fixos ao lado do corpo, extensão completa sem jogar o tronco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=triceps+corda+polia" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Tríceps francês (halter ou barra)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Cotovelo fixo apontando pro teto, controlar a descida.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=triceps+frances" target="_blank">assistir</a></td></tr>
+    </table>
+  </div>
+
+  <div class="daycontent" id="qua">
+    <table>
+      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Puxada frente (pulley)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Puxar até a altura do queixo/peito, sem jogar o corpo para trás. Foca latíssimo do dorso.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=puxada+frente+pulley" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada baixa (cabo/triângulo)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Puxar com os cotovelos rente ao corpo, coluna neutra.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=remada+baixa+cabo" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada curvada (halteres)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Tronco a 45°, evitar impulso, contrair a escápula no topo do movimento.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=remada+curvada+halteres" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Rosca direta (barra W)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Cotovelos fixos, não balançar o quadril para gerar impulso.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=rosca+direta+barra+w" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Rosca alternada (halteres)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Rotação do punho na subida (supinação), controlar a descida.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=rosca+alternada+halteres" target="_blank">assistir</a></td></tr>
+    </table>
+  </div>
+
+  <div class="daycontent" id="sex">
+    <table>
+      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Agachamento livre ou na máquina Smith</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">120s</td><td class="tip" data-label="Dica">Joelho acompanha a direção do pé, quadril desce até paralelo. Trabalha quadríceps e glúteos.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=agachamento+livre+execu%C3%A7%C3%A3o" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Leg press 45°</td><td data-label="Séries x Reps">4x12</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Não travar o joelho no topo, amplitude controlada.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=leg+press+45" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Cadeira extensora</td><td data-label="Séries x Reps">3x15</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Subida controlada, pausa de 1s no topo, foco no quadríceps isolado.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=cadeira+extensora" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Mesa flexora</td><td data-label="Séries x Reps">3x15</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Foca posterior de coxa, sem elevar o quadril do banco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=mesa+flexora" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Panturrilha em pé (máquina/step)</td><td data-label="Séries x Reps">4x15</td><td data-label="Descanso">45s</td><td class="tip" data-label="Dica">Amplitude completa, pausa na contração máxima.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=panturrilha+em+pe" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Abdômen (prancha + elevação de pernas)</td><td data-label="Séries x Reps">3x40s / 3x15</td><td data-label="Descanso">45s</td><td class="tip" data-label="Dica">Prancha com quadril alinhado; elevação de pernas sem balançar o tronco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=prancha+abdominal" target="_blank">assistir</a></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ALIMENTACAO -->
+<section class="page" id="alimentacao">
+  <h2>Alimentação — adaptada para Crohn + ganho de massa</h2>
+  <p class="tip">Refeições de fácil digestão, baixo resíduo em fases de atividade, fibra solúvel priorizada sobre insolúvel, proteína distribuída ao longo do dia.</p>
+  <div class="daytabs" id="foodTabs"></div>
+  <div id="foodContent"></div>
+</section>
+
+<!-- MERCADO -->
+<section class="page" id="mercado">
+  <h2>Lista de Mercado (base para 5 dias de marmita)</h2>
+
+  <div class="market-cat">
+    <h3>Proteínas</h3>
+    <div class="market-list">
+      <label class="market-item"><input type="checkbox">Peito de frango</label>
+      <label class="market-item"><input type="checkbox">Patinho moído</label>
+      <label class="market-item"><input type="checkbox">Ovos</label>
+      <label class="market-item"><input type="checkbox">Tilápia</label>
+      <label class="market-item"><input type="checkbox">Atum em lata (água)</label>
+      <label class="market-item"><input type="checkbox">Whey protein</label>
+      <label class="market-item"><input type="checkbox">Iogurte natural</label>
+    </div>
+  </div>
+
+  <div class="market-cat">
+    <h3>Carboidratos</h3>
+    <div class="market-list">
+      <label class="market-item"><input type="checkbox">Arroz branco</label>
+      <label class="market-item"><input type="checkbox">Batata inglesa</label>
+      <label class="market-item"><input type="checkbox">Batata doce</label>
+      <label class="market-item"><input type="checkbox">Aveia em flocos finos</label>
+      <label class="market-item"><input type="checkbox">Tapioca</label>
+      <label class="market-item"><input type="checkbox">Banana</label>
+      <label class="market-item"><input type="checkbox">Mamão</label>
+    </div>
+  </div>
+
+  <div class="market-cat">
+    <h3>Legumes (indicados para Crohn — cozidos, sem casca/semente)</h3>
+    <div class="market-list">
+      <label class="market-item"><input type="checkbox">Cenoura</label>
+      <label class="market-item"><input type="checkbox">Abobrinha</label>
+      <label class="market-item"><input type="checkbox">Chuchu</label>
+      <label class="market-item"><input type="checkbox">Abóbora</label>
+      <label class="market-item"><input type="checkbox">Vagem</label>
+    </div>
+  </div>
+
+  <div class="market-cat">
+    <h3>Gorduras boas</h3>
+    <div class="market-list">
+      <label class="market-item"><input type="checkbox">Azeite de oliva</label>
+      <label class="market-item"><input type="checkbox">Pasta de amendoim</label>
+      <label class="market-item"><input type="checkbox">Castanhas (se tolerado)</label>
+    </div>
+  </div>
+</section>
+
+<!-- ACOMPANHAMENTO -->
+<section class="page" id="acompanhamento">
+  <h2>Acompanhamento</h2>
+  <div class="form-row">
+    <input type="date" id="trkDate">
+    <input type="number" step="0.1" id="trkPeso" placeholder="Peso (kg)">
+    <input type="number" step="0.1" id="trkBraco" placeholder="Braço (cm)">
+    <input type="number" step="0.1" id="trkCintura" placeholder="Cintura (cm)">
+    <input type="number" step="0.1" id="trkCoxa" placeholder="Coxa (cm)">
+    <button class="primary" onclick="addRegistro()">Salvar registro</button>
+  </div>
+  <table id="trkTable">
+    <tr><th>Data</th><th>Peso</th><th>Braço</th><th>Cintura</th><th>Coxa</th></tr>
+  </table>
+  <h3 style="font-size:15px; margin-top:20px;">Evolução do peso</h3>
+  <canvas id="pesoChart" width="700" height="260"></canvas>
+</section>
+
+</main>
+
+<script>
+// ---------- Navegação ----------
+function ativarPagina(btn){
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.page).classList.add('active');
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.navbtn').forEach(btn=>{
+  btn.addEventListener('click',(e)=>{ e.preventDefault(); ativarPagina(btn); });
+});
+document.querySelectorAll('.daytab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const parent = btn.parentElement;
+    parent.querySelectorAll('.daytab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#treino .daycontent').forEach(d=>d.classList.remove('active'));
+    document.getElementById(btn.dataset.day).classList.add('active');
+  });
+});
+
+// ---------- Checkboxes persistidos ----------
+document.querySelectorAll('[data-key]').forEach(chk=>{
+  const key = chk.dataset.key;
+  chk.checked = localStorage.getItem(key)==='true';
+  chk.addEventListener('change',()=>{ localStorage.setItem(key, chk.checked); updateTreinoProgresso(); });
+});
+document.querySelectorAll('.exchk').forEach((chk,i)=>{
+  const key = 'ex_'+i;
+  chk.checked = localStorage.getItem(key)==='true';
+  chk.addEventListener('change',()=>{ localStorage.setItem(key, chk.checked); updateTreinoProgresso(); });
+});
+function updateTreinoProgresso(){
+  const boxes = document.querySelectorAll('.exchk');
+  const done = [...boxes].filter(b=>b.checked).length;
+  const pct = boxes.length ? Math.round(done/boxes.length*100) : 0;
+  document.getElementById('treinoPct').textContent = pct+'%';
+  document.getElementById('treinoBar').style.width = pct+'%';
+}
+updateTreinoProgresso();
+function limparChecklist(){
+  document.querySelectorAll('[data-key]').forEach(chk=>{
+    chk.checked = false;
+    localStorage.setItem(chk.dataset.key, false);
+  });
+}
+
+// ---------- Alimentação por dia ----------
+const dias = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+const refeicoes = {
+  cafe:'Café da manhã', lancheM:'Lanche manhã', almoco:'Almoço', lancheT:'Lanche tarde',
+  pre:'Pré-treino', pos:'Pós-treino', jantar:'Jantar', ceia:'Ceia'
+};
+const cardapio = {
+  Segunda:{cafe:'Tapioca com ovo mexido + mamão',lancheM:'Iogurte natural + banana',almoco:'Arroz branco, patinho moído, cenoura e abobrinha cozidas',lancheT:'Whey com água + torrada',pre:'Banana + mel',pos:'Whey + batata doce cozida',jantar:'Frango grelhado, arroz, chuchu cozido',ceia:'Iogurte natural'},
+  Terça:{cafe:'Aveia fina com banana e mel',lancheM:'Ovo cozido + torrada',almoco:'Tilápia, arroz, abóbora cozida',lancheT:'Vitamina de mamão com whey',pre:'Tapioca com mel',pos:'Whey + batata inglesa',jantar:'Patinho moído, arroz, vagem cozida',ceia:'Iogurte natural'},
+  Quarta:{cafe:'Tapioca com queijo branco',lancheM:'Banana + pasta de amendoim',almoco:'Frango desfiado, arroz, cenoura cozida',lancheT:'Whey com água',pre:'Mamão',pos:'Batata doce + whey',jantar:'Ovo mexido, arroz, abobrinha cozida',ceia:'Iogurte natural'},
+  Quinta:{cafe:'Aveia com banana',lancheM:'Iogurte natural',almoco:'Tilápia, arroz, chuchu cozido',lancheT:'Torrada com queijo branco',pre:'Banana',pos:'Whey + arroz',jantar:'Patinho moído, batata inglesa cozida, vagem',ceia:'Iogurte natural'},
+  Sexta:{cafe:'Tapioca com ovo',lancheM:'Whey com água',almoco:'Frango grelhado, arroz, abóbora cozida',lancheT:'Mamão',pre:'Mel + torrada',pos:'Batata doce + whey',jantar:'Tilápia, arroz, cenoura cozida',ceia:'Iogurte natural'},
+  Sábado:{cafe:'Ovo mexido + tapioca',lancheM:'Banana com mel',almoco:'Patinho moído, arroz, chuchu cozido',lancheT:'Iogurte natural',pre:'Mamão',pos:'Whey + batata inglesa',jantar:'Frango, arroz, abobrinha cozida',ceia:'Iogurte natural'},
+  Domingo:{cafe:'Aveia com mamão',lancheM:'Torrada com queijo branco',almoco:'Tilápia, arroz, vagem cozida',lancheT:'Whey com água',pre:'Banana',pos:'Batata doce + whey',jantar:'Ovo mexido, arroz, cenoura cozida',ceia:'Iogurte natural'}
+};
+const foodTabs = document.getElementById('foodTabs');
+const foodContent = document.getElementById('foodContent');
+dias.forEach((d,i)=>{
+  const tab = document.createElement('button');
+  tab.className = 'daytab' + (i===0?' active':'');
+  tab.textContent = d;
+  tab.onclick = ()=>{
+    document.querySelectorAll('#foodTabs .daytab').forEach(b=>b.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('#foodContent .daycontent').forEach(c=>c.classList.remove('active'));
+    document.getElementById('food_'+d).classList.add('active');
+  };
+  foodTabs.appendChild(tab);
+
+  const content = document.createElement('div');
+  content.className = 'daycontent' + (i===0?' active':'');
+  content.id = 'food_'+d;
+  Object.keys(refeicoes).forEach(k=>{
+    content.innerHTML += `<div class="meal"><h4>${refeicoes[k]}</h4><p>${cardapio[d][k]}</p></div>`;
+  });
+  foodContent.appendChild(content);
+});
+
+// ---------- Acompanhamento ----------
+function loadRegistros(){ return JSON.parse(localStorage.getItem('registros')||'[]'); }
+function saveRegistros(r){ localStorage.setItem('registros', JSON.stringify(r)); }
+function renderTable(){
+  const table = document.getElementById('trkTable');
+  table.innerHTML = '<tr><th>Data</th><th>Peso</th><th>Braço</th><th>Cintura</th><th>Coxa</th></tr>';
+  loadRegistros().forEach(r=>{
+    table.innerHTML += `<tr><td data-label="Data">${r.data}</td><td data-label="Peso">${r.peso||'-'}</td><td data-label="Braço">${r.braco||'-'}</td><td data-label="Cintura">${r.cintura||'-'}</td><td data-label="Coxa">${r.coxa||'-'}</td></tr>`;
+  });
+}
+function addRegistro(){
+  const data = document.getElementById('trkDate').value;
+  if(!data){ alert('Selecione uma data'); return; }
+  const reg = {
+    data, peso:document.getElementById('trkPeso').value,
+    braco:document.getElementById('trkBraco').value,
+    cintura:document.getElementById('trkCintura').value,
+    coxa:document.getElementById('trkCoxa').value
+  };
+  const regs = loadRegistros();
+  regs.push(reg);
+  regs.sort((a,b)=>a.data.localeCompare(b.data));
+  saveRegistros(regs);
+  renderTable();
+  drawChart();
+  updateMetaPeso();
+  if(reg.peso) document.getElementById('dashPeso').textContent = reg.peso+' kg';
+}
+function drawChart(){
+  const regs = loadRegistros().filter(r=>r.peso);
+  const canvas = document.getElementById('pesoChart');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle = '#2a322c';
+  ctx.strokeRect(0,0,canvas.width,canvas.height);
+  if(regs.length<2) return;
+  const pesos = regs.map(r=>parseFloat(r.peso));
+  const min = Math.min(...pesos)-1, max = Math.max(...pesos)+1;
+  const padding = 30;
+  ctx.beginPath();
+  ctx.strokeStyle = '#5fbf7a';
+  ctx.lineWidth = 2;
+  regs.forEach((r,i)=>{
+    const x = padding + (canvas.width-2*padding) * (i/(regs.length-1));
+    const y = canvas.height-padding - (canvas.height-2*padding) * ((parseFloat(r.peso)-min)/(max-min));
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  ctx.fillStyle = '#5fbf7a';
+  regs.forEach((r,i)=>{
+    const x = padding + (canvas.width-2*padding) * (i/(regs.length-1));
+    const y = canvas.height-padding - (canvas.height-2*padding) * ((parseFloat(r.peso)-min)/(max-min));
+    ctx.beginPath(); ctx.arc(x,y,3,0,7); ctx.fill();
+  });
+}
+// ---------- Meta de peso ----------
+const PESO_INICIAL = 65;
+const PESO_META = 70;
+const DATA_INICIO_KEY = 'dataInicioMeta';
+const PRAZO_SEMANAS = 8;
+if(!localStorage.getItem(DATA_INICIO_KEY)){
+  localStorage.setItem(DATA_INICIO_KEY, new Date().toISOString().slice(0,10));
+}
+function diasRestantes(){
+  const inicio = new Date(localStorage.getItem(DATA_INICIO_KEY));
+  const limite = new Date(inicio); limite.setDate(limite.getDate() + PRAZO_SEMANAS*7);
+  const hoje = new Date();
+  return Math.max(0, Math.round((limite-hoje)/86400000));
+}
+function updateMetaPeso(){
+  const regs = loadRegistros().filter(r=>r.peso);
+  const pesoAtual = regs.length ? parseFloat(regs[regs.length-1].peso) : PESO_INICIAL;
+  const pct = Math.max(0, Math.min(100, Math.round((pesoAtual-PESO_INICIAL)/(PESO_META-PESO_INICIAL)*100)));
+  document.getElementById('pesoPct').textContent = pct+'%';
+  document.getElementById('pesoBar').style.width = pct+'%';
+  const restantes = diasRestantes();
+  document.getElementById('dashPrazo').textContent = restantes>0 ? `(faltam ${restantes} dias)` : '(prazo encerrado)';
+  const faltamKg = (PESO_META-pesoAtual).toFixed(1);
+  document.getElementById('pesoRitmo').textContent = faltamKg>0
+    ? `Faltam ${faltamKg}kg. Ritmo necessário: ${restantes>0 ? (faltamKg/(restantes/7)).toFixed(2) : '—'} kg/semana.`
+    : 'Meta atingida.';
+}
+updateMetaPeso();
+const _regsIniciais = loadRegistros().filter(r=>r.peso);
+if(_regsIniciais.length){
+  document.getElementById('dashPeso').textContent = _regsIniciais[_regsIniciais.length-1].peso+' kg';
+}
+</script>
+</body>
+</html>
