@@ -73,6 +73,22 @@
   }
   .video-link{color:var(--accent); text-decoration:none; font-size:12.5px;}
   .video-link:hover{text-decoration:underline;}
+  .set-counter{display:flex; align-items:center; gap:8px;}
+  .set-counter .set-btn{
+    background:var(--panel2); border:1px solid var(--line); color:var(--accent);
+    width:28px; height:28px; border-radius:50%; font-size:16px; font-weight:700;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; line-height:1;
+  }
+  .set-counter .set-val{font-size:13px; color:var(--text); min-width:34px; text-align:center;}
+  .set-counter .set-val.done{color:var(--accent); font-weight:700;}
+  .timer-wrap{display:flex; align-items:center; gap:8px;}
+  .timer-btn{
+    background:var(--panel2); border:1px solid var(--line); color:var(--accent2);
+    padding:6px 12px; border-radius:6px; font-size:12.5px; cursor:pointer; font-weight:600;
+    min-width:64px;
+  }
+  .timer-btn.running{background:var(--accent2); color:#0f1210; border-color:var(--accent2);}
+  .timer-btn.done{background:var(--danger); color:#fff; border-color:var(--danger);}
   .market-cat{margin-bottom:18px;}
   .market-cat h3{color:var(--accent2); font-size:14px; margin-bottom:8px;}
   .market-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px;}
@@ -104,6 +120,8 @@
     table td:first-child:before{content:none;}
     .card{padding:14px;}
     .card .value{font-size:22px;}
+    .set-counter .set-btn{width:34px; height:34px; font-size:19px;}
+    .timer-btn{padding:9px 16px; font-size:14px; min-width:76px;}
   }
 </style>
 </head>
@@ -169,35 +187,37 @@
 
   <div class="daycontent active" id="seg">
     <table>
-      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th></tr>
+      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th><th>Série</th><th>Timer</th></tr>
       <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Supino reto (barra ou halteres)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Escápulas retraídas, barra desce até tocar o peito sem quicar. Trabalha peitoral maior.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=supino+reto+execu%C3%A7%C3%A3o" target="_blank">assistir</a></td></tr>
       <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Supino inclinado com halteres</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Banco a 30-45°. Foca porção clavicular do peitoral. Não travar o cotovelo no topo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=supino+inclinado+halteres" target="_blank">assistir</a></td></tr>
       <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Desenvolvimento de ombro (halteres)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Cotovelos levemente à frente do corpo, evita impacto excessivo no manguito rotador.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=desenvolvimento+ombro+halteres" target="_blank">assistir</a></td></tr>
       <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Elevação lateral</td><td data-label="Séries x Reps">3x15</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Subir até a linha do ombro, cotovelo levemente flexionado, sem balançar o tronco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+ombro" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Tríceps corda (polia)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Cotovelos fixos ao lado do corpo, extensão completa sem jogar o tronco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=triceps+corda+polia" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Tríceps testa com halter</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Deitado no banco, cotovelos fixos apontando pro teto, desce o halter até perto da testa e estende.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=triceps+testa+halter" target="_blank">assistir</a></td></tr>
       <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Tríceps francês (halter ou barra)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Cotovelo fixo apontando pro teto, controlar a descida.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=triceps+frances" target="_blank">assistir</a></td></tr>
     </table>
   </div>
 
   <div class="daycontent" id="qua">
+    <p class="tip" style="margin-bottom:10px;">Sem barra fixa/elástico em casa, não há substituto direto para puxada vertical (largura das costas). O foco aqui vai para espessura/densidade das costas via remada, que halter cobre bem.</p>
     <table>
-      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Puxada frente (pulley)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Puxar até a altura do queixo/peito, sem jogar o corpo para trás. Foca latíssimo do dorso.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=puxada+frente+pulley" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada baixa (cabo/triângulo)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Puxar com os cotovelos rente ao corpo, coluna neutra.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=remada+baixa+cabo" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada curvada (halteres)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Tronco a 45°, evitar impulso, contrair a escápula no topo do movimento.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=remada+curvada+halteres" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Rosca direta (barra W)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Cotovelos fixos, não balançar o quadril para gerar impulso.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=rosca+direta+barra+w" target="_blank">assistir</a></td></tr>
+      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th><th>Série</th><th>Timer</th></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada curvada (halteres, pegada aberta)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Tronco a 45°, cotovelos abertos ~45° do corpo pra ativar mais a largura das costas. Contrair escápula no topo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=remada+curvada+halteres+pegada+aberta" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada unilateral apoiada no banco (halter)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Um joelho e uma mão apoiados no banco, puxa o halter até a lateral do tronco, cotovelo colado ao corpo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=remada+unilateral+banco+halter" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Pullover com halter (no banco)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Deitado no banco, halter com as duas mãos acima do peito, desce atrás da cabeça alongando o dorsal, volta controlado.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=pullover+halter+banco" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Rosca direta (barra)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Cotovelos fixos, não balançar o quadril para gerar impulso.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=rosca+direta+barra" target="_blank">assistir</a></td></tr>
       <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Rosca alternada (halteres)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Rotação do punho na subida (supinação), controlar a descida.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=rosca+alternada+halteres" target="_blank">assistir</a></td></tr>
     </table>
   </div>
 
   <div class="daycontent" id="sex">
     <table>
-      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Agachamento livre ou na máquina Smith</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">120s</td><td class="tip" data-label="Dica">Joelho acompanha a direção do pé, quadril desce até paralelo. Trabalha quadríceps e glúteos.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=agachamento+livre+execu%C3%A7%C3%A3o" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Leg press 45°</td><td data-label="Séries x Reps">4x12</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Não travar o joelho no topo, amplitude controlada.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=leg+press+45" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Cadeira extensora</td><td data-label="Séries x Reps">3x15</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Subida controlada, pausa de 1s no topo, foco no quadríceps isolado.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=cadeira+extensora" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Mesa flexora</td><td data-label="Séries x Reps">3x15</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Foca posterior de coxa, sem elevar o quadril do banco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=mesa+flexora" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Panturrilha em pé (máquina/step)</td><td data-label="Séries x Reps">4x15</td><td data-label="Descanso">45s</td><td class="tip" data-label="Dica">Amplitude completa, pausa na contração máxima.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=panturrilha+em+pe" target="_blank">assistir</a></td></tr>
+      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th><th>Série</th><th>Timer</th></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Agachamento livre com halteres</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">120s</td><td class="tip" data-label="Dica">Halteres nas mãos ao lado do corpo ou apoiados no ombro. Joelho acompanha a direção do pé, quadril desce até paralelo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=agachamento+halteres+execu%C3%A7%C3%A3o" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Afundo com halteres (passada)</td><td data-label="Séries x Reps">4x12 cada perna</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Passo à frente, joelho de trás quase toca o chão, tronco ereto. Halteres nas mãos.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=afundo+halteres+passada" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Cadeira búlgara (com banco)</td><td data-label="Séries x Reps">3x12 cada perna</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Pé de trás apoiado no banco, desce até formar 90° no joelho da frente. Segura halteres para carga extra.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=cadeira+bulgara+banco" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Stiff com halteres</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Joelhos levemente flexionados, desce o halter deslizando perto das pernas, foco em posterior de coxa e glúteo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=stiff+halteres" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Elevação pélvica (glute bridge) com halter</td><td data-label="Séries x Reps">3x15</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Costas no chão ou apoiadas no banco, halter sobre o quadril, sobe contraindo o glúteo no topo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+pelvica+halter" target="_blank">assistir</a></td></tr>
+      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Panturrilha em pé com halteres (step ou degrau)</td><td data-label="Séries x Reps">4x15</td><td data-label="Descanso">45s</td><td class="tip" data-label="Dica">Halteres nas mãos, ponta do pé em um degrau, amplitude completa, pausa na contração máxima.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=panturrilha+em+pe+halteres+degrau" target="_blank">assistir</a></td></tr>
       <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Abdômen (prancha + elevação de pernas)</td><td data-label="Séries x Reps">3x40s / 3x15</td><td data-label="Descanso">45s</td><td class="tip" data-label="Dica">Prancha com quadril alinhado; elevação de pernas sem balançar o tronco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=prancha+abdominal" target="_blank">assistir</a></td></tr>
     </table>
   </div>
@@ -301,6 +321,119 @@ document.querySelectorAll('.daytab').forEach(btn=>{
     btn.classList.add('active');
     document.querySelectorAll('#treino .daycontent').forEach(d=>d.classList.remove('active'));
     document.getElementById(btn.dataset.day).classList.add('active');
+  });
+});
+
+// ---------- Contador de séries + Timer de descanso por exercício ----------
+function parseDescansoSegundos(txt){
+  const m = txt.match(/(\d+)/);
+  return m ? parseInt(m[1],10) : 60;
+}
+function parseSeriesAlvo(txt){
+  const m = txt.match(/^(\d+)/);
+  return m ? parseInt(m[1],10) : 3;
+}
+function beep(){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = 'sine'; o.frequency.value = 880;
+    g.gain.setValueAtTime(0.25, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.6);
+    o.start(); o.stop(ctx.currentTime+0.6);
+  }catch(e){}
+  if(navigator.vibrate) navigator.vibrate([200,100,200]);
+}
+document.querySelectorAll('#treino table').forEach(table=>{
+  const rows = table.querySelectorAll('tr');
+  rows.forEach((row,idx)=>{
+    if(idx===0) return; // pula cabeçalho
+    const cells = row.querySelectorAll('td');
+    if(cells.length < 4) return;
+    const seriesTxt = cells[2].textContent.trim();
+    const descansoTxt = cells[3].textContent.trim();
+    const seriesAlvo = parseSeriesAlvo(seriesTxt);
+    const descansoSeg = parseDescansoSegundos(descansoTxt);
+
+    // Célula: contador de séries
+    const tdSerie = document.createElement('td');
+    tdSerie.setAttribute('data-label','Série');
+    tdSerie.innerHTML = `
+      <div class="set-counter">
+        <button class="set-btn" data-action="minus">−</button>
+        <span class="set-val">0/${seriesAlvo}</span>
+        <button class="set-btn" data-action="plus">+</button>
+      </div>`;
+    row.appendChild(tdSerie);
+    const valSpan = tdSerie.querySelector('.set-val');
+    let atual = 0;
+
+    // Célula: timer de descanso (disparado ao avançar série)
+    const tdTimer = document.createElement('td');
+    tdTimer.setAttribute('data-label','Timer');
+    tdTimer.innerHTML = `<div class="timer-wrap"><button class="timer-btn">${descansoSeg}s</button></div>`;
+    row.appendChild(tdTimer);
+    const timerBtn = tdTimer.querySelector('.timer-btn');
+    let intervalId = null;
+    let restante = descansoSeg;
+
+    function iniciarTimer(){
+      if(intervalId){ clearInterval(intervalId); intervalId = null; }
+      restante = descansoSeg;
+      timerBtn.textContent = restante+'s';
+      timerBtn.classList.remove('done');
+      timerBtn.classList.add('running');
+      intervalId = setInterval(()=>{
+        restante--;
+        if(restante <= 0){
+          clearInterval(intervalId);
+          intervalId = null;
+          timerBtn.textContent = 'Feito!';
+          timerBtn.classList.remove('running');
+          timerBtn.classList.add('done');
+          beep();
+          setTimeout(()=>{
+            timerBtn.textContent = descansoSeg+'s';
+            timerBtn.classList.remove('done');
+          },2000);
+        } else {
+          timerBtn.textContent = restante+'s';
+        }
+      },1000);
+    }
+
+    // "+" avança a série e dispara o timer de descanso automaticamente
+    // (exceto ao completar a última série, onde não há próxima série a descansar)
+    tdSerie.querySelector('[data-action="plus"]').addEventListener('click',()=>{
+      if(atual < seriesAlvo){
+        atual++;
+        valSpan.textContent = atual+'/'+seriesAlvo;
+        valSpan.classList.toggle('done', atual>=seriesAlvo);
+        if(atual < seriesAlvo){ iniciarTimer(); }
+      }
+    });
+    tdSerie.querySelector('[data-action="minus"]').addEventListener('click',()=>{
+      if(atual > 0){ atual--; valSpan.textContent = atual+'/'+seriesAlvo; }
+      valSpan.classList.toggle('done', atual>=seriesAlvo);
+    });
+
+    // Botão do timer continua clicável para reiniciar manualmente se necessário
+    timerBtn.addEventListener('click', iniciarTimer);
+
+    // Ao marcar o checkbox do exercício como pronto, zera o timer
+    const exCheckbox = row.querySelector('.exchk');
+    if(exCheckbox){
+      exCheckbox.addEventListener('change',()=>{
+        if(exCheckbox.checked){
+          if(intervalId){ clearInterval(intervalId); intervalId = null; }
+          restante = descansoSeg;
+          timerBtn.textContent = descansoSeg+'s';
+          timerBtn.classList.remove('running','done');
+        }
+      });
+    }
   });
 });
 
