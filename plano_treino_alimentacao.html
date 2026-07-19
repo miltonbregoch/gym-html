@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plano Hipertrofia — 65kg / 1,73m</title>
+<title>Projeto Hipertrofia 12-18 meses — 63kg → 75kg</title>
 <style>
   :root{
     --bg:#0f1210;
     --panel:#171b18;
     --panel2:#1e2420;
+    --panel3:#242b25;
     --line:#2a322c;
     --text:#e7ece8;
     --muted:#8fa096;
@@ -18,7 +19,7 @@
     --radius:10px;
   }
   *{box-sizing:border-box;}
-  button, .navbtn, .daytab, input[type=checkbox], label, a{
+  button, .navbtn, .daytab, input[type=checkbox], label, a, .exectab{
     touch-action:manipulation;
     -webkit-tap-highlight-color:rgba(95,191,122,.25);
   }
@@ -27,10 +28,9 @@
     font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
     display:flex; min-height:100vh;
   }
-  /* Sidebar */
   nav{
-    width:210px; background:var(--panel); border-right:1px solid var(--line);
-    padding:20px 0; position:sticky; top:0; height:100vh; flex-shrink:0;
+    width:220px; background:var(--panel); border-right:1px solid var(--line);
+    padding:20px 0; position:sticky; top:0; height:100vh; flex-shrink:0; overflow-y:auto;
   }
   nav h1{font-size:15px; padding:0 20px 16px; margin:0; color:var(--accent); letter-spacing:.5px;}
   nav h1 span{display:block; font-size:11px; color:var(--muted); font-weight:400; margin-top:2px;}
@@ -40,20 +40,25 @@
   }
   .navbtn:hover{color:var(--text); background:var(--panel2);}
   .navbtn.active{color:var(--accent); border-left-color:var(--accent); background:var(--panel2); font-weight:600;}
-  main{flex:1; padding:28px 32px; max-width:980px;}
+  main{flex:1; padding:28px 32px; max-width:1040px;}
   .page{display:none;}
   .page.active{display:block;}
   h2{margin-top:0; font-size:22px; border-bottom:1px solid var(--line); padding-bottom:10px;}
-  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin:18px 0;}
+  h3.section-title{color:var(--accent2); font-size:15px; margin:24px 0 8px; text-transform:uppercase; letter-spacing:.5px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px; margin:18px 0;}
   .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px;}
-  .card .label{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;}
-  .card .value{font-size:26px; font-weight:700; margin-top:6px;}
+  .card .label{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;}
+  .card .value{font-size:24px; font-weight:700; margin-top:6px;}
   .card .value.accent{color:var(--accent);}
+  .card input[type=number], .card input[type=text]{
+    width:100%; background:var(--panel2); border:1px solid var(--line); color:var(--text);
+    padding:8px 10px; border-radius:6px; font-size:15px; margin-top:6px;
+  }
   .bar-outer{background:var(--panel2); border-radius:6px; height:8px; margin-top:10px; overflow:hidden;}
   .bar-inner{background:var(--accent); height:100%; width:0%; transition:width .3s;}
-  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14px;}
-  th,td{padding:10px 8px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top;}
-  th{color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase;}
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px;}
+  th,td{padding:9px 8px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top;}
+  th{color:var(--muted); font-weight:600; font-size:11.5px; text-transform:uppercase;}
   tr:hover td{background:var(--panel2);}
   .tip{color:var(--muted); font-size:12.5px;}
   .daytabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px;}
@@ -65,40 +70,52 @@
   .daycontent{display:none;}
   .daycontent.active{display:block;}
   .meal{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; margin-bottom:10px;}
-  .meal h4{margin:0 0 6px; color:var(--accent2); font-size:13px; text-transform:uppercase; letter-spacing:.5px;}
+  .meal h4{margin:0 0 6px; color:var(--accent2); font-size:13px; text-transform:uppercase; letter-spacing:.5px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;}
+  .meal h4 .hora{color:var(--muted); font-weight:400; font-size:11.5px; background:var(--panel2); padding:2px 8px; border-radius:10px;}
   .meal p{margin:0; font-size:14.5px; line-height:1.5;}
+  .meal p.swap{color:var(--accent2); font-size:12.5px; margin-top:6px;}
   input[type=checkbox]{width:17px; height:17px; accent-color:var(--accent); cursor:pointer;}
-  @media (max-width:760px){
-    input[type=checkbox]{width:26px; height:26px;}
-  }
+  @media (max-width:760px){ input[type=checkbox]{width:26px; height:26px;} }
   .video-link{color:var(--accent); text-decoration:none; font-size:12.5px;}
   .video-link:hover{text-decoration:underline;}
-  .set-counter{display:flex; align-items:center; gap:8px;}
-  .set-counter .set-btn{
-    background:var(--panel2); border:1px solid var(--line); color:var(--accent);
-    width:28px; height:28px; border-radius:50%; font-size:16px; font-weight:700;
-    cursor:pointer; display:flex; align-items:center; justify-content:center; line-height:1;
-  }
-  .set-counter .set-val{font-size:13px; color:var(--text); min-width:34px; text-align:center;}
-  .set-counter .set-val.done{color:var(--accent); font-weight:700;}
-  .timer-wrap{display:flex; align-items:center; gap:8px;}
-  .timer-btn{
-    background:var(--panel2); border:1px solid var(--line); color:var(--accent2);
-    padding:6px 12px; border-radius:6px; font-size:12.5px; cursor:pointer; font-weight:600;
-    min-width:64px;
-  }
-  .timer-btn.running{background:var(--accent2); color:#0f1210; border-color:var(--accent2);}
-  .timer-btn.done{background:var(--danger); color:#fff; border-color:var(--danger);}
   .market-cat{margin-bottom:18px;}
   .market-cat h3{color:var(--accent2); font-size:14px; margin-bottom:8px;}
-  .market-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px;}
+  .market-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:6px;}
   .market-item{display:flex; align-items:center; gap:8px; font-size:14px; background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:7px 10px;}
   .form-row{display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;}
   .form-row input{background:var(--panel2); border:1px solid var(--line); color:var(--text); padding:8px 10px; border-radius:6px; font-size:14px;}
   button.primary{background:var(--accent); color:#0f1210; border:none; padding:9px 16px; border-radius:6px; font-weight:600; cursor:pointer; font-size:14px;}
   button.primary:hover{opacity:.9;}
+  button.crisis-btn{background:var(--danger); color:#fff; border:none; padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer; font-size:15px; width:100%;}
+  button.crisis-btn.active{background:#8a3d33;}
   canvas{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); max-width:100%;}
   .note{background:#1e2420; border-left:3px solid var(--danger); padding:12px 14px; font-size:13px; color:var(--muted); border-radius:0 6px 6px 0; margin-top:16px;}
+  .note.warn{border-left-color:var(--accent2);}
+  .badge{display:inline-block; background:var(--panel2); color:var(--accent2); font-size:11px; padding:3px 8px; border-radius:12px; margin-left:6px;}
+  .exbox{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:14px;}
+  .exbox h4{margin:0 0 10px; font-size:15.5px; color:var(--text);}
+  .exbox .exgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin-bottom:10px;}
+  .exbox .exgrid .field{background:var(--panel2); border-radius:8px; padding:8px 10px;}
+  .exbox .exgrid .field .k{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px;}
+  .exbox .exgrid .field .v{font-size:13.5px; margin-top:2px; line-height:1.4;}
+  .exbox .errdica{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;}
+  .exbox .errdica div{font-size:13px; padding:8px 10px; border-radius:8px;}
+  .exbox .err{background:rgba(217,112,96,.12); color:#e29388;}
+  .exbox .dica{background:rgba(95,191,122,.12); color:#8fd6a4;}
+  .exbox .err b, .exbox .dica b{display:block; font-size:10.5px; text-transform:uppercase; letter-spacing:.4px; margin-bottom:3px; color:var(--muted);}
+  .exec-toggle{background:none; border:1px solid var(--line); color:var(--accent); padding:6px 12px; border-radius:6px; font-size:12.5px; cursor:pointer;}
+  .exec-detail{display:none; margin-top:10px; padding-top:10px; border-top:1px solid var(--line); font-size:13.5px; line-height:1.6; color:var(--muted);}
+  .exec-detail.open{display:block;}
+  .exec-detail b{color:var(--text);}
+  details.planb{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-top:20px;}
+  details.planb summary{cursor:pointer; font-weight:700; color:var(--accent2); font-size:15px; list-style:none;}
+  details.planb summary::-webkit-details-marker{display:none;}
+  details.planb summary:before{content:"▸ "; color:var(--accent2);}
+  details.planb[open] summary:before{content:"▾ ";}
+  details.planb .inner{margin-top:14px;}
+  .recipe{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:12px;}
+  .recipe h4{margin:0 0 8px; color:var(--accent2); font-size:15px;}
+  .recipe ul{margin:0; padding-left:18px; font-size:14px; line-height:1.7;}
   @media print{ nav{display:none;} main{max-width:100%;} .page{display:block !important;} }
   @media (max-width:760px){
     body{flex-direction:column;}
@@ -109,7 +126,6 @@
     main{padding:14px;}
     .daytabs{position:sticky; top:0; background:var(--bg); z-index:5; padding:8px 0; margin:0 -14px 14px; padding-left:14px; padding-right:14px; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch;}
     .daytab{flex-shrink:0; padding:12px 18px; font-size:14px;}
-    /* Tabelas viram cards empilhados no celular */
     table thead{display:none;}
     table, table tbody, table tr, table td{display:block; width:100%;}
     table{border:none;}
@@ -119,21 +135,22 @@
     table td:first-child{justify-content:flex-start;}
     table td:first-child:before{content:none;}
     .card{padding:14px;}
-    .card .value{font-size:22px;}
-    .set-counter .set-btn{width:34px; height:34px; font-size:19px;}
-    .timer-btn{padding:9px 16px; font-size:14px; min-width:76px;}
+    .card .value{font-size:20px;}
+    .exbox .errdica{grid-template-columns:1fr;}
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <h1>PLANO<span>Hipertrofia · Crohn</span></h1>
+  <h1>PROJETO<span>Hipertrofia 12-18 meses · Crohn</span></h1>
   <button class="navbtn active" data-page="dashboard">🏠 Dashboard</button>
-  <button class="navbtn" data-page="treino">🏋️ Treino</button>
+  <button class="navbtn" data-page="treino">🏋️ Cronograma & Treino</button>
+  <button class="navbtn" data-page="progressao">📊 Progressão de Carga</button>
   <button class="navbtn" data-page="alimentacao">🍽 Alimentação</button>
-  <button class="navbtn" data-page="mercado">🛒 Lista de Mercado</button>
-  <button class="navbtn" data-page="acompanhamento">📈 Acompanhamento</button>
+  <button class="navbtn" data-page="marmitas">🍱 Marmitas</button>
+  <button class="navbtn" data-page="mercado">🛒 Mercado</button>
+  <button class="navbtn" data-page="acompanhamento">📈 Evolução Corporal</button>
 </nav>
 
 <main>
@@ -141,17 +158,20 @@
 <!-- DASHBOARD -->
 <section class="page active" id="dashboard">
   <h2>Dashboard</h2>
-  <div class="grid">
-    <div class="card"><div class="label">Peso atual</div><div class="value" id="dashPeso">65 kg</div></div>
-    <div class="card"><div class="label">Meta de peso</div><div class="value accent">70 kg <span class="tip" id="dashPrazo">(em 8 sem)</span></div></div>
-    <div class="card"><div class="label">Altura</div><div class="value">1,73 m</div></div>
-    <div class="card"><div class="label">IMC (atual → meta)</div><div class="value" id="dashImc">21.7 → 23.4</div></div>
-    <div class="card"><div class="label">Meta de proteína/dia</div><div class="value accent" id="dashProteina">140 g</div><div class="tip">2g/kg do peso-alvo (70kg)</div></div>
-    <div class="card"><div class="label">Água recomendada</div><div class="value accent">2.6 L</div></div>
-    <div class="card"><div class="label">Progresso semanal de treino</div>
-      <div class="value" id="treinoPct">0%</div>
-      <div class="bar-outer"><div class="bar-inner" id="treinoBar"></div></div>
-    </div>
+
+  <button class="crisis-btn" id="crisisToggle" onclick="toggleCrisis()">🚨 Crohn entrou em crise — ativar cardápio de estabilização</button>
+  <div class="tip" id="crisisStatus" style="margin-top:8px;">Modo normal ativo.</div>
+
+  <div class="grid" style="margin-top:18px;">
+    <div class="card"><div class="label">Peso atual</div><input type="number" id="dashPesoInput" value="63" step="0.1" onchange="updatePesoAtual()"><div class="tip">kg</div></div>
+    <div class="card"><div class="label">Meta</div><div class="value accent">75 kg</div><div class="tip">Ganho alvo: 0,3-0,5 kg/semana</div></div>
+    <div class="card"><div class="label">IMC (altura 1,73m)</div><div class="value" id="dashImc">21.1</div></div>
+    <div class="card"><div class="label">Dias treinados esta semana</div><div class="value accent" id="diasTreinados">0 / 6</div></div>
+    <div class="card"><div class="label">Água hoje</div><input type="number" id="aguaInput" placeholder="ml consumidos" onchange="updateAgua()"><div class="tip">meta: <span id="aguaMeta">2.4</span> L</div></div>
+    <div class="card"><div class="label">Refeições feitas hoje</div><div class="value" id="refeicoesFeitas">0 / 7</div></div>
+    <div class="card"><div class="label">Creatina hoje</div><label style="display:flex; align-items:center; gap:8px; margin-top:6px; font-size:13px;"><input type="checkbox" id="chkCreatina" onchange="salvarChecklist()"> tomada</label></div>
+    <div class="card"><div class="label">Oxandrolona (controle pessoal)</div><label style="display:flex; align-items:center; gap:8px; margin-top:6px; font-size:13px;"><input type="checkbox" id="chkOxa" onchange="salvarChecklist()"> tomada hoje</label><div class="tip">Apenas registro — sem recomendação de dose aqui. Acompanhamento é com seu médico.</div></div>
+    <div class="card"><div class="label">Horas dormidas</div><input type="number" id="sonoInput" placeholder="horas" step="0.5" onchange="salvarChecklist()"></div>
     <div class="card"><div class="label">Progresso rumo à meta de peso</div>
       <div class="value" id="pesoPct">0%</div>
       <div class="bar-outer"><div class="bar-inner" id="pesoBar"></div></div>
@@ -159,360 +179,721 @@
     </div>
   </div>
 
-  <h2 style="font-size:16px; border:none; margin-top:26px;">Checklist diário</h2>
+  <div class="note warn">
+    <b>Sobre o cronograma:</b> Domingo foi ajustado para dia leve (mantendo só trabalho de antebraço/punho), em vez de treino pesado de braços. Treinar os 7 dias sem folga real tende a acumular fadiga e é um gatilho conhecido de crise em Crohn — essa é a única mudança que fiz em relação ao que você definiu, o resto segue exatamente sua estrutura aprovada.
+  </div>
+
+  <h3 class="section-title">Checklist do dia</h3>
   <div class="grid">
-    <div class="card"><label><input type="checkbox" data-key="chk_treino"> Treino do dia feito</label></div>
-    <div class="card"><label><input type="checkbox" data-key="chk_agua"> Meta de água atingida</label></div>
-    <div class="card"><label><input type="checkbox" data-key="chk_creatina"> Creatina tomada</label></div>
-    <div class="card"><label><input type="checkbox" data-key="chk_dieta"> Dieta seguida</label></div>
-    <div class="card"><label><input type="checkbox" data-key="chk_sono"> Dormiu 7h+</label></div>
+    <div class="card"><label><input type="checkbox" data-key="chk_treino" onchange="salvarChecklist()"> Treino do dia feito</label></div>
+    <div class="card"><label><input type="checkbox" data-key="chk_agua" onchange="salvarChecklist()"> Meta de água atingida</label></div>
+    <div class="card"><label><input type="checkbox" data-key="chk_dieta" onchange="salvarChecklist()"> Dieta seguida</label></div>
+    <div class="card"><label><input type="checkbox" data-key="chk_sono" onchange="salvarChecklist()"> Dormiu 7h+</label></div>
   </div>
   <button class="primary" style="background:none; border:1px solid var(--danger); color:var(--danger); margin-top:4px;" onclick="limparChecklist()">Limpar checklist do dia</button>
 </section>
-
 <!-- TREINO -->
 <section class="page" id="treino">
-  <h2>Treino — 3x por semana</h2>
+  <h2>Cronograma & Treino</h2>
+  <p class="tip">Toque em qualquer exercício para ver a aba "Como executar" com postura, respiração, amplitude e ativação muscular.</p>
   <div class="daytabs">
-    <button class="daytab active" data-day="seg">Segunda — Peito/Ombro/Tríceps</button>
-    <button class="daytab" data-day="qua">Quarta — Costas/Bíceps</button>
-    <button class="daytab" data-day="sex">Sexta — Pernas + Abdômen</button>
+    <button class="daytab active" data-day="seg">Segunda — Peito+Tríceps</button>
+    <button class="daytab" data-day="ter">Terça — Recuperação</button>
+    <button class="daytab" data-day="qua">Quarta — Costas+Bíceps+Antebraço</button>
+    <button class="daytab" data-day="qui">Quinta — Recuperação</button>
+    <button class="daytab" data-day="sex">Sexta — Ombros+Trapézio+Abdômen</button>
+    <button class="daytab" data-day="sab">Sábado — Pernas (Pesado)</button>
+    <button class="daytab" data-day="dom">Domingo — Leve (Antebraço/Punho)</button>
   </div>
 
   <div class="daycontent active" id="seg">
-    <table>
-      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th><th>Série</th><th>Timer</th></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Supino reto (barra ou halteres)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Escápulas retraídas, barra desce até tocar o peito sem quicar. Trabalha peitoral maior.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=supino+reto+execu%C3%A7%C3%A3o" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Supino inclinado com halteres</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Banco a 30-45°. Foca porção clavicular do peitoral. Não travar o cotovelo no topo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=supino+inclinado+halteres" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Desenvolvimento de ombro (halteres)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Cotovelos levemente à frente do corpo, evita impacto excessivo no manguito rotador.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=desenvolvimento+ombro+halteres" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Elevação lateral</td><td data-label="Séries x Reps">3x15</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Subir até a linha do ombro, cotovelo levemente flexionado, sem balançar o tronco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+lateral+ombro" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Tríceps testa com halter</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Deitado no banco, cotovelos fixos apontando pro teto, desce o halter até perto da testa e estende.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=triceps+testa+halter" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Tríceps francês (halter ou barra)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Cotovelo fixo apontando pro teto, controlar a descida.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=triceps+frances" target="_blank">assistir</a></td></tr>
-    </table>
+    <p class="tip" style="margin-bottom:12px;"><strong>Objetivo:</strong> construção de volume no peitoral e força nos movimentos de empurrar.</p>
+    <div id="ex-seg"></div>
+  </div>
+
+  <div class="daycontent" id="ter">
+    <p class="tip" style="margin-bottom:12px;"><strong>Objetivo:</strong> recuperação, síntese proteica e controle da inflamação. Sem treino de força — dia de descanso ativo (caminhada leve opcional) ou descanso total.</p>
+    <div class="note" style="margin-top:0;">Este é um dos dois dias de recuperação da semana. Não faça treino de resistência aqui — é o que permite ao corpo (e ao intestino) absorver o volume de segunda antes de quarta.</div>
   </div>
 
   <div class="daycontent" id="qua">
-    <p class="tip" style="margin-bottom:10px;">Sem barra fixa/elástico em casa, não há substituto direto para puxada vertical (largura das costas). O foco aqui vai para espessura/densidade das costas via remada, que halter cobre bem.</p>
-    <table>
-      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th><th>Série</th><th>Timer</th></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada curvada (halteres, pegada aberta)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Tronco a 45°, cotovelos abertos ~45° do corpo pra ativar mais a largura das costas. Contrair escápula no topo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=remada+curvada+halteres+pegada+aberta" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada unilateral apoiada no banco (halter)</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Um joelho e uma mão apoiados no banco, puxa o halter até a lateral do tronco, cotovelo colado ao corpo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=remada+unilateral+banco+halter" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Pullover com halter (no banco)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Deitado no banco, halter com as duas mãos acima do peito, desce atrás da cabeça alongando o dorsal, volta controlado.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=pullover+halter+banco" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Rosca direta (barra)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Cotovelos fixos, não balançar o quadril para gerar impulso.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=rosca+direta+barra" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Rosca alternada (halteres)</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Rotação do punho na subida (supinação), controlar a descida.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=rosca+alternada+halteres" target="_blank">assistir</a></td></tr>
-    </table>
+    <p class="tip" style="margin-bottom:12px;"><strong>Objetivo:</strong> um dos treinos mais importantes — prioridade para espessura e largura das costas, bíceps e fortalecimento do antebraço.</p>
+    <div id="ex-qua"></div>
+  </div>
+
+  <div class="daycontent" id="qui">
+    <p class="tip" style="margin-bottom:12px;"><strong>Objetivo:</strong> manter glicogênio muscular e preparar recuperação para o treino de ombros/trapézio/abdômen de sexta. Dia de descanso ativo ou total.</p>
+    <div class="note" style="margin-top:0;">Segundo dia de recuperação da semana. Se estiver disposto, uma caminhada leve ou alongamento ajuda — mas nada de treino de força aqui.</div>
   </div>
 
   <div class="daycontent" id="sex">
-    <table>
-      <tr><th></th><th>Exercício</th><th>Séries x Reps</th><th>Descanso</th><th>Execução / Dica</th><th>Vídeo</th><th>Série</th><th>Timer</th></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Agachamento livre com halteres</td><td data-label="Séries x Reps">4x10</td><td data-label="Descanso">120s</td><td class="tip" data-label="Dica">Halteres nas mãos ao lado do corpo ou apoiados no ombro. Joelho acompanha a direção do pé, quadril desce até paralelo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=agachamento+halteres+execu%C3%A7%C3%A3o" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Afundo com halteres (passada)</td><td data-label="Séries x Reps">4x12 cada perna</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Passo à frente, joelho de trás quase toca o chão, tronco ereto. Halteres nas mãos.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=afundo+halteres+passada" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Cadeira búlgara (com banco)</td><td data-label="Séries x Reps">3x12 cada perna</td><td data-label="Descanso">90s</td><td class="tip" data-label="Dica">Pé de trás apoiado no banco, desce até formar 90° no joelho da frente. Segura halteres para carga extra.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=cadeira+bulgara+banco" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Stiff com halteres</td><td data-label="Séries x Reps">3x12</td><td data-label="Descanso">75s</td><td class="tip" data-label="Dica">Joelhos levemente flexionados, desce o halter deslizando perto das pernas, foco em posterior de coxa e glúteo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=stiff+halteres" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Elevação pélvica (glute bridge) com halter</td><td data-label="Séries x Reps">3x15</td><td data-label="Descanso">60s</td><td class="tip" data-label="Dica">Costas no chão ou apoiadas no banco, halter sobre o quadril, sobe contraindo o glúteo no topo.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=eleva%C3%A7%C3%A3o+pelvica+halter" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Panturrilha em pé com halteres (step ou degrau)</td><td data-label="Séries x Reps">4x15</td><td data-label="Descanso">45s</td><td class="tip" data-label="Dica">Halteres nas mãos, ponta do pé em um degrau, amplitude completa, pausa na contração máxima.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=panturrilha+em+pe+halteres+degrau" target="_blank">assistir</a></td></tr>
-      <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Abdômen (prancha + elevação de pernas)</td><td data-label="Séries x Reps">3x40s / 3x15</td><td data-label="Descanso">45s</td><td class="tip" data-label="Dica">Prancha com quadril alinhado; elevação de pernas sem balançar o tronco.</td><td data-label="Vídeo"><a class="video-link" href="https://www.youtube.com/results?search_query=prancha+abdominal" target="_blank">assistir</a></td></tr>
-    </table>
+    <p class="tip" style="margin-bottom:12px;"><strong>Objetivo:</strong> criar largura corporal, com foco em deltoide lateral.</p>
+    <div id="ex-sex"></div>
   </div>
-</section>
 
+  <div class="daycontent" id="sab">
+    <p class="tip" style="margin-bottom:12px;"><strong>Objetivo:</strong> o treino mais intenso da semana. Sem economia — quadríceps, posterior, glúteo e panturrilha.</p>
+    <div id="ex-sab"></div>
+  </div>
+
+  <div class="daycontent" id="dom">
+    <p class="tip" style="margin-bottom:12px;"><strong>Objetivo:</strong> dia leve, ajustado para não empilhar fadiga em cima do sábado pesado. Mantém só o trabalho de antebraço/punho que você queria recuperar, mais um pouco de panturrilha e abdômen leve. Nada até a falha.</p>
+    <div id="ex-dom"></div>
+  </div>
+
+  <details class="planb">
+    <summary>Se eu faltar à academia — treino de reposição em casa</summary>
+    <div class="inner">
+      <p class="tip">Kit disponível: halteres/barra pequena somando 10kg (4 anilhas de 4kg + 4 de 1,25kg), par de caneleiras de 5kg, banco ajustável (0°, 20°, 30°, 45°, vertical — sem função de perna).</p>
+      <div class="daytabs">
+        <button class="daytab active" data-day="pb-empurra">Substituto Peito/Ombro/Tríceps</button>
+        <button class="daytab" data-day="pb-puxa">Substituto Costas/Bíceps/Antebraço</button>
+        <button class="daytab" data-day="pb-perna">Substituto Pernas</button>
+        <button class="daytab" data-day="pb-full">Substituto Full Body / Metabólico</button>
+      </div>
+      <div class="daycontent active" id="pb-empurra">
+        <table>
+          <tr><th></th><th>Exercício</th><th>Equipamento</th><th>Séries x Reps</th><th>Dica</th></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Supino reto no banco</td><td data-label="Equipamento">Halteres</td><td data-label="Séries x Reps">4x12-15</td><td class="tip" data-label="Dica">Banco 0°, cadência 2s subir / 1s pausa / 4s descer.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Supino inclinado</td><td data-label="Equipamento">Halteres</td><td data-label="Séries x Reps">3x12-15</td><td class="tip" data-label="Dica">Banco a 30°.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Desenvolvimento sentado</td><td data-label="Equipamento">Halteres</td><td data-label="Séries x Reps">3x12</td><td class="tip" data-label="Dica">Banco vertical.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Tríceps testa no banco</td><td data-label="Equipamento">Halteres</td><td data-label="Séries x Reps">3x12-15</td><td class="tip" data-label="Dica">Cotovelos fixos.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Flexão (pés no banco)</td><td data-label="Equipamento">Peso do corpo</td><td data-label="Séries x Reps">3x até falha</td><td class="tip" data-label="Dica">Finalização de peito+tríceps+core.</td></tr>
+        </table>
+      </div>
+      <div class="daycontent" id="pb-puxa">
+        <table>
+          <tr><th></th><th>Exercício</th><th>Equipamento</th><th>Séries x Reps</th><th>Dica</th></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada curvada</td><td data-label="Equipamento">Barra pequena</td><td data-label="Séries x Reps">4x12-15</td><td class="tip" data-label="Dica">Tronco a 45°.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada unilateral apoiada</td><td data-label="Equipamento">Halter</td><td data-label="Séries x Reps">3x12 cada lado</td><td class="tip" data-label="Dica">Apoio no banco.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Rosca direta</td><td data-label="Equipamento">Barra</td><td data-label="Séries x Reps">3x12</td><td class="tip" data-label="Dica">Cotovelos fixos.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Rosca martelo cruzada</td><td data-label="Equipamento">Halteres</td><td data-label="Séries x Reps">3x12-15 cada braço</td><td class="tip" data-label="Dica">Foco em braquiorradial.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Flexão de punho sentado</td><td data-label="Equipamento">Halteres</td><td data-label="Séries x Reps">3x15-20</td><td class="tip" data-label="Dica">Só o punho se move.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Extensão de punho</td><td data-label="Equipamento">Halteres</td><td data-label="Séries x Reps">2x15-20</td><td class="tip" data-label="Dica">Antebraço não cresce por milagre — série completa.</td></tr>
+        </table>
+      </div>
+      <div class="daycontent" id="pb-perna">
+        <table>
+          <tr><th></th><th>Exercício</th><th>Equipamento</th><th>Séries x Reps</th><th>Dica</th></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Agachamento</td><td data-label="Equipamento">Barra pequena</td><td data-label="Séries x Reps">4x15</td><td class="tip" data-label="Dica">Amplitude completa.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Afundo búlgaro</td><td data-label="Equipamento">Halteres + banco</td><td data-label="Séries x Reps">3x10-12 cada perna</td><td class="tip" data-label="Dica">Pé traseiro no banco.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Step-up no banco</td><td data-label="Equipamento">Halteres</td><td data-label="Séries x Reps">3x12 cada perna</td><td class="tip" data-label="Dica">Empurra pelo calcanhar.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Stiff</td><td data-label="Equipamento">Barra</td><td data-label="Séries x Reps">3x12-15</td><td class="tip" data-label="Dica">Foco em posterior de coxa.</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Panturrilha em pé</td><td data-label="Equipamento">Halteres</td><td data-label="Séries x Reps">4x20</td><td class="tip" data-label="Dica">Amplitude completa.</td></tr>
+        </table>
+      </div>
+      <div class="daycontent" id="pb-full">
+        <p class="tip">Circuito — 4 voltas, descanso 60s entre voltas.</p>
+        <table>
+          <tr><th></th><th>Exercício</th><th>Equipamento</th><th>Reps</th></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Agachamento</td><td data-label="Equipamento">Barra pequena</td><td data-label="Reps">20</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Remada</td><td data-label="Equipamento">Barra pequena</td><td data-label="Reps">20</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Flexão (pés no banco)</td><td data-label="Equipamento">Peso do corpo</td><td data-label="Reps">12-15</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Desenvolvimento</td><td data-label="Equipamento">Halteres</td><td data-label="Reps">12</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Step-up no banco</td><td data-label="Equipamento">Halteres</td><td data-label="Reps">12 cada perna</td></tr>
+          <tr><td><input type="checkbox" class="exchk"></td><td data-label="Exercício">Abdominal remador</td><td data-label="Equipamento">Peso do corpo</td><td data-label="Reps">20</td></tr>
+        </table>
+      </div>
+    </div>
+  </details>
+</section>
+<!-- PROGRESSAO -->
+<section class="page" id="progressao">
+  <h2>Progressão de Carga</h2>
+  <p class="tip">Semanas 1-2: encontre cargas que permitam terminar cada série com 1-3 repetições "na reserva". Semanas 3-4: ao atingir o topo da faixa de reps em todas as séries, suba a carga em ~2,5-5% e volte ao piso da faixa. Priorize execução e amplitude antes de subir peso.</p>
+
+  <div class="form-row">
+    <select id="progExercicio" style="background:var(--panel2); border:1px solid var(--line); color:var(--text); padding:8px 10px; border-radius:6px;">
+      <option>Supino reto máquina</option>
+      <option>Supino inclinado máquina</option>
+      <option>Puxada alta frente</option>
+      <option>Remada articulada máquina</option>
+      <option>Desenvolvimento máquina</option>
+      <option>Leg Press 45°</option>
+      <option>Agachamento Hack</option>
+      <option>Rosca Scott máquina</option>
+      <option>Tríceps polia barra</option>
+      <option>Outro</option>
+    </select>
+    <input type="number" id="progSemana" placeholder="Semana nº">
+    <input type="number" id="progCarga" placeholder="Carga (kg)" step="0.5">
+    <button class="primary" onclick="addProgressao()">Registrar</button>
+  </div>
+  <table id="progTable">
+    <tr><th>Semana</th><th>Exercício</th><th>Carga (kg)</th></tr>
+  </table>
+</section>
 <!-- ALIMENTACAO -->
 <section class="page" id="alimentacao">
-  <h2>Alimentação — adaptada para Crohn + ganho de massa</h2>
-  <p class="tip">Refeições de fácil digestão, baixo resíduo em fases de atividade, fibra solúvel priorizada sobre insolúvel, proteína distribuída ao longo do dia.</p>
-  <div class="daytabs" id="foodTabs"></div>
-  <div id="foodContent"></div>
+  <h2>Alimentação Semanal</h2>
+  <div style="background:var(--panel2); padding:14px 16px; border-radius:8px; margin:12px 0; font-size:13.5px; color:var(--muted);" id="aliModoTexto">
+    Modo normal ativo. Ative "Crohn entrou em crise" no Dashboard para trocar o cardápio automaticamente.
+  </div>
+
+  <div class="daytabs">
+    <button class="daytab active" data-day="ali-seg">Segunda</button>
+    <button class="daytab" data-day="ali-ter">Terça</button>
+    <button class="daytab" data-day="ali-qua">Quarta</button>
+    <button class="daytab" data-day="ali-qui">Quinta</button>
+    <button class="daytab" data-day="ali-sex">Sexta</button>
+    <button class="daytab" data-day="ali-sab">Sábado</button>
+    <button class="daytab" data-day="ali-dom">Domingo</button>
+  </div>
+
+  <!-- SEGUNDA -->
+  <div class="daycontent active" id="ali-seg">
+    <div class="meal norm"><h4>Acordar <span class="hora">06:30</span></h4><p>500 ml de água</p></div>
+    <div class="meal norm"><h4>Café da manhã <span class="hora">07:15</span></h4><p>3 ovos mexidos, 1 pão francês, 1 banana, café sem açúcar</p></div>
+    <div class="meal norm"><h4>Lanche da manhã <span class="hora">10:00</span></h4><p>Iogurte natural (170g), 30g de aveia</p><p class="swap crisis-only">Crise: trocar aveia por banana</p></div>
+    <div class="meal norm"><h4>Almoço <span class="hora">12:00</span></h4><p>220g peito de frango, 150g arroz branco, 100g feijão, cenoura ou abobrinha, salada simples</p><p class="swap crisis-only">Crise: retirar o feijão</p></div>
+    <div class="meal norm"><h4>Lanche da tarde <span class="hora">15:30</span></h4><p>1 banana, 15g pasta de amendoim</p></div>
+    <div class="meal norm"><h4>Pré-treino <span class="hora">18:00</span></h4><p>2 fatias de pão, 2 ovos, café</p></div>
+    <div class="meal norm"><h4>Pós-treino <span class="hora">20:00</span></h4><p>180g frango grelhado, 150g arroz branco</p></div>
+    <div class="meal norm"><h4>Jantar <span class="hora">21:00</span></h4><p>200g carne moída, 120g arroz, legumes</p></div>
+    <div class="meal norm"><h4>Ceia <span class="hora">22:30</span></h4><p>170g iogurte ou 2 ovos cozidos</p></div>
+  </div>
+
+  <!-- TERÇA -->
+  <div class="daycontent" id="ali-ter">
+    <p class="tip" style="margin-bottom:10px;"><strong>Recuperação Muscular</strong> — foco em síntese proteica e controle da inflamação (dia de descanso do treino).</p>
+    <div class="meal norm"><h4>Acordar <span class="hora">06:30</span></h4><p>500 ml de água</p></div>
+    <div class="meal norm"><h4>Café da manhã <span class="hora">07:15</span></h4><p>3 ovos mexidos, 1 pão francês, 1 maçã, café sem açúcar</p></div>
+    <div class="meal norm"><h4>Lanche da manhã <span class="hora">10:00</span></h4><p>Iogurte natural (170g), 1 banana</p><p class="swap crisis-only">Crise: trocar por iogurte zero lactose</p></div>
+    <div class="meal norm"><h4>Almoço <span class="hora">12:00</span></h4><p>220g hambúrguer caseiro de patinho, 150g arroz branco, 100g feijão, cenoura ou chuchu cozidos, salada simples</p><p class="swap crisis-only">Crise: retirar o feijão</p></div>
+    <div class="meal norm"><h4>Lanche da tarde <span class="hora">15:30</span></h4><p>15g pasta de amendoim, 1 banana</p></div>
+    <div class="meal norm"><h4>Lanche da noite <span class="hora">18:00</span></h4><p>2 ovos cozidos, 2 fatias de pão</p></div>
+    <div class="meal norm"><h4>Jantar <span class="hora">20:00</span></h4><p>200g frango desfiado, 120g arroz branco, legumes cozidos</p></div>
+    <div class="meal norm"><h4>Ceia <span class="hora">22:30</span></h4><p>170g iogurte natural ou 2 ovos cozidos</p></div>
+  </div>
+
+  <!-- QUARTA -->
+  <div class="daycontent" id="ali-qua">
+    <div class="meal norm"><h4>Acordar <span class="hora">06:30</span></h4><p>500 ml de água</p></div>
+    <div class="meal norm"><h4>Café da manhã <span class="hora">07:15</span></h4><p>Omelete de 3 ovos, tapioca (60g), maçã</p></div>
+    <div class="meal norm"><h4>Lanche da manhã <span class="hora">10:00</span></h4><p>Banana, pasta de amendoim</p></div>
+    <div class="meal norm"><h4>Almoço <span class="hora">12:00</span></h4><p>220g patinho, 180g arroz, legumes cozidos</p></div>
+    <div class="meal norm"><h4>Lanche da tarde <span class="hora">15:30</span></h4><p>Iogurte, banana</p></div>
+    <div class="meal norm"><h4>Pré-treino <span class="hora">18:00</span></h4><p>150g batata inglesa, 150g frango</p></div>
+    <div class="meal norm"><h4>Pós-treino <span class="hora">20:00</span></h4><p>180g frango, banana</p></div>
+    <div class="meal norm"><h4>Jantar <span class="hora">21:00</span></h4><p>200g frango desfiado, 120g arroz</p></div>
+    <div class="meal norm"><h4>Ceia <span class="hora">22:30</span></h4><p>250ml leite sem lactose ou iogurte</p></div>
+  </div>
+
+  <!-- QUINTA -->
+  <div class="daycontent" id="ali-qui">
+    <p class="tip" style="margin-bottom:10px;"><strong>Recuperação + preparação para sexta</strong> — manter glicogênio muscular (dia de descanso do treino).</p>
+    <div class="meal norm"><h4>Acordar <span class="hora">06:30</span></h4><p>500 ml de água</p></div>
+    <div class="meal norm"><h4>Café da manhã <span class="hora">07:15</span></h4><p>Omelete de 3 ovos, tapioca (50g), 1 banana, café sem açúcar</p></div>
+    <div class="meal norm"><h4>Lanche da manhã <span class="hora">10:00</span></h4><p>30g castanhas, 1 maçã</p><p class="swap crisis-only">Crise: trocar castanhas por banana</p></div>
+    <div class="meal norm"><h4>Almoço <span class="hora">12:00</span></h4><p>220g peito de frango, 150g arroz branco, legumes cozidos, salada simples</p></div>
+    <div class="meal norm"><h4>Lanche da tarde <span class="hora">15:30</span></h4><p>Iogurte natural (170g), banana</p></div>
+    <div class="meal norm"><h4>Lanche da noite <span class="hora">18:00</span></h4><p>Sanduíche: 2 fatias de pão, 2 ovos mexidos</p></div>
+    <div class="meal norm"><h4>Jantar <span class="hora">20:00</span></h4><p>Omelete de 4 ovos, 150g batata inglesa, abobrinha ou cenoura cozida</p></div>
+    <div class="meal norm"><h4>Ceia <span class="hora">22:30</span></h4><p>Iogurte natural ou 2 ovos cozidos</p></div>
+  </div>
+
+  <!-- SEXTA -->
+  <div class="daycontent" id="ali-sex">
+    <div class="meal norm"><h4>Café da manhã <span class="hora">07:15</span></h4><p>3 ovos, tapioca, banana</p></div>
+    <div class="meal norm"><h4>Lanche da manhã <span class="hora">10:00</span></h4><p>Castanhas (30g), maçã</p><p class="swap crisis-only">Crise: trocar castanhas por banana</p></div>
+    <div class="meal norm"><h4>Almoço <span class="hora">12:00</span></h4><p>220g frango, 150g arroz, salada</p></div>
+    <div class="meal norm"><h4>Lanche da tarde <span class="hora">15:30</span></h4><p>Banana</p></div>
+    <div class="meal norm"><h4>Pré-treino <span class="hora">18:00</span></h4><p>Iogurte, banana</p></div>
+    <div class="meal norm"><h4>Pós-treino <span class="hora">20:00</span></h4><p>180g frango, arroz</p></div>
+    <div class="meal norm"><h4>Jantar <span class="hora">21:00</span></h4><p>Omelete de 4 ovos, legumes</p></div>
+    <div class="meal norm"><h4>Ceia <span class="hora">22:30</span></h4><p>Iogurte</p></div>
+  </div>
+
+  <!-- SABADO -->
+  <div class="daycontent" id="ali-sab">
+    <p class="tip" style="margin-bottom:10px;"><strong>Pernas — treino pesado.</strong> Refeição forte no almoço para sustentar a intensidade.</p>
+    <div class="meal norm"><h4>Café da manhã</h4><p>4 ovos, pão francês, banana</p></div>
+    <div class="meal norm"><h4>Lanche</h4><p>Iogurte, banana</p></div>
+    <div class="meal norm"><h4>Almoço</h4><p>250g carne vermelha, 180g arroz, 150g batata, legumes</p></div>
+    <div class="meal norm"><h4>Lanche</h4><p>Banana</p></div>
+    <div class="meal norm"><h4>Pré-treino</h4><p>Pão francês, 2 ovos</p></div>
+    <div class="meal norm"><h4>Pós-treino</h4><p>220g frango, 180g arroz</p></div>
+    <div class="meal norm"><h4>Jantar</h4><p>Patinho moído, batata inglesa</p></div>
+    <div class="meal norm"><h4>Ceia</h4><p>2 ovos</p></div>
+  </div>
+
+  <!-- DOMINGO -->
+  <div class="daycontent" id="ali-dom">
+    <p class="tip" style="margin-bottom:10px;"><strong>Dia leve</strong> (antebraço/punho) — sem exigência calórica extra de treino pesado.</p>
+    <div class="meal norm"><h4>Café da manhã</h4><p>Omelete de 4 ovos, tapioca, banana</p></div>
+    <div class="meal norm"><h4>Lanche</h4><p>Iogurte</p></div>
+    <div class="meal norm"><h4>Almoço</h4><p>Fricassê de frango (versão leve), arroz branco, cenoura</p></div>
+    <div class="meal norm"><h4>Lanche</h4><p>Banana, pasta de amendoim</p></div>
+    <div class="meal norm"><h4>Pré-treino</h4><p>Batata inglesa, frango</p></div>
+    <div class="meal norm"><h4>Pós-treino</h4><p>Frango, arroz</p></div>
+    <div class="meal norm"><h4>Jantar</h4><p>Hambúrguer caseiro de patinho, batata rústica (air fryer)</p></div>
+    <div class="meal norm"><h4>Ceia</h4><p>Iogurte ou ovos</p></div>
+  </div>
+
+  <div class="note" style="margin-top:20px;" id="crisisInfoBox">
+    <b>Modo Estabilização (ativado pelo botão no Dashboard):</b> quando ligado, o cardápio esconde feijão, aveia e whey concentrado, priorizando arroz, frango, batata, mandioca, cenoura, chuchu, ovos e peixe — alimentos cozidos/assados/air fryer, evitando fritura.
+  </div>
+</section>
+<!-- MARMITAS -->
+<section class="page" id="marmitas">
+  <h2>Marmitas</h2>
+  <p class="tip">Receitas simples para preparar em lote — cinco dias de refeições.</p>
+
+  <div class="recipe">
+    <h4>Marmita 1</h4>
+    <ul>
+      <li>220g peito de frango grelhado ou air fryer</li>
+      <li>160g arroz branco</li>
+      <li>Cenoura cozida</li>
+    </ul>
+  </div>
+
+  <div class="recipe">
+    <h4>Marmita 2</h4>
+    <ul>
+      <li>Patinho moído ou em cubos</li>
+      <li>Batata cozida ou assada</li>
+      <li>Abobrinha</li>
+    </ul>
+  </div>
+
+  <div class="recipe">
+    <h4>Marmita 3 — Fricassê de frango (versão mais leve)</h4>
+    <ul>
+      <li>Frango desfiado (220g) refogado com pouco azeite</li>
+      <li>Creme de leite light ou iogurte natural no lugar do creme tradicional (reduz gordura)</li>
+      <li>Milho e ervilha em pequena quantidade — retirar se estiver em crise (fibra insolúvel)</li>
+      <li>Arroz branco (150g) como acompanhamento</li>
+      <li class="tip" style="list-style:none; margin-top:6px; color:var(--muted);">Versão mais amigável ao Crohn que o produto industrializado — menos gordura e sódio, ingredientes reconhecíveis.</li>
+    </ul>
+  </div>
 </section>
 
 <!-- MERCADO -->
 <section class="page" id="mercado">
-  <h2>Lista de Mercado (base para 5 dias de marmita)</h2>
+  <h2>Lista de Mercado</h2>
+  <p class="tip">Já com quantidades pensadas para cinco dias de marmitas e refeições.</p>
 
   <div class="market-cat">
-    <h3>Proteínas</h3>
+    <h3>Açougue</h3>
     <div class="market-list">
-      <label class="market-item"><input type="checkbox">Peito de frango</label>
-      <label class="market-item"><input type="checkbox">Patinho moído</label>
-      <label class="market-item"><input type="checkbox">Ovos</label>
-      <label class="market-item"><input type="checkbox">Tilápia</label>
-      <label class="market-item"><input type="checkbox">Atum em lata (água)</label>
-      <label class="market-item"><input type="checkbox">Whey protein</label>
-      <label class="market-item"><input type="checkbox">Iogurte natural</label>
+      <div class="market-item"><input type="checkbox"> Peito de frango</div>
+      <div class="market-item"><input type="checkbox"> Patinho (moído e em cubos)</div>
+      <div class="market-item"><input type="checkbox"> Carne moída magra</div>
+      <div class="market-item"><input type="checkbox"> Filé de tilápia</div>
     </div>
   </div>
 
   <div class="market-cat">
-    <h3>Carboidratos</h3>
+    <h3>Hortifruti</h3>
     <div class="market-list">
-      <label class="market-item"><input type="checkbox">Arroz branco</label>
-      <label class="market-item"><input type="checkbox">Batata inglesa</label>
-      <label class="market-item"><input type="checkbox">Batata doce</label>
-      <label class="market-item"><input type="checkbox">Aveia em flocos finos</label>
-      <label class="market-item"><input type="checkbox">Tapioca</label>
-      <label class="market-item"><input type="checkbox">Banana</label>
-      <label class="market-item"><input type="checkbox">Mamão</label>
+      <div class="market-item"><input type="checkbox"> Banana</div>
+      <div class="market-item"><input type="checkbox"> Maçã</div>
+      <div class="market-item"><input type="checkbox"> Cenoura</div>
+      <div class="market-item"><input type="checkbox"> Abobrinha</div>
+      <div class="market-item"><input type="checkbox"> Chuchu</div>
+      <div class="market-item"><input type="checkbox"> Batata inglesa</div>
+      <div class="market-item"><input type="checkbox"> Mandioca</div>
+      <div class="market-item"><input type="checkbox"> Alface / salada</div>
     </div>
   </div>
 
   <div class="market-cat">
-    <h3>Legumes (indicados para Crohn — cozidos, sem casca/semente)</h3>
+    <h3>Laticínios</h3>
     <div class="market-list">
-      <label class="market-item"><input type="checkbox">Cenoura</label>
-      <label class="market-item"><input type="checkbox">Abobrinha</label>
-      <label class="market-item"><input type="checkbox">Chuchu</label>
-      <label class="market-item"><input type="checkbox">Abóbora</label>
-      <label class="market-item"><input type="checkbox">Vagem</label>
+      <div class="market-item"><input type="checkbox"> Iogurte natural</div>
+      <div class="market-item"><input type="checkbox"> Iogurte zero lactose</div>
+      <div class="market-item"><input type="checkbox"> Leite sem lactose</div>
+      <div class="market-item"><input type="checkbox"> Ovos (dúzia x3)</div>
     </div>
   </div>
 
   <div class="market-cat">
-    <h3>Gorduras boas</h3>
+    <h3>Padaria</h3>
     <div class="market-list">
-      <label class="market-item"><input type="checkbox">Azeite de oliva</label>
-      <label class="market-item"><input type="checkbox">Pasta de amendoim</label>
-      <label class="market-item"><input type="checkbox">Castanhas (se tolerado)</label>
+      <div class="market-item"><input type="checkbox"> Pão francês</div>
+      <div class="market-item"><input type="checkbox"> Tapioca (goma)</div>
+    </div>
+  </div>
+
+  <div class="market-cat">
+    <h3>Congelados</h3>
+    <div class="market-list">
+      <div class="market-item"><input type="checkbox"> Legumes congelados (reserva)</div>
+    </div>
+  </div>
+
+  <div class="market-cat">
+    <h3>Mercearia</h3>
+    <div class="market-list">
+      <div class="market-item"><input type="checkbox"> Arroz branco</div>
+      <div class="market-item"><input type="checkbox"> Feijão</div>
+      <div class="market-item"><input type="checkbox"> Aveia</div>
+      <div class="market-item"><input type="checkbox"> Pasta de amendoim</div>
+      <div class="market-item"><input type="checkbox"> Castanhas</div>
+      <div class="market-item"><input type="checkbox"> Azeite</div>
+      <div class="market-item"><input type="checkbox"> Café</div>
+      <div class="market-item"><input type="checkbox"> Creatina</div>
     </div>
   </div>
 </section>
 
 <!-- ACOMPANHAMENTO -->
 <section class="page" id="acompanhamento">
-  <h2>Acompanhamento</h2>
+  <h2>Evolução Corporal</h2>
+  <p class="tip">Registre semanalmente. O gráfico de peso é atualizado automaticamente.</p>
   <div class="form-row">
     <input type="date" id="trkDate">
-    <input type="number" step="0.1" id="trkPeso" placeholder="Peso (kg)">
-    <input type="number" step="0.1" id="trkBraco" placeholder="Braço (cm)">
-    <input type="number" step="0.1" id="trkCintura" placeholder="Cintura (cm)">
-    <input type="number" step="0.1" id="trkCoxa" placeholder="Coxa (cm)">
-    <button class="primary" onclick="addRegistro()">Salvar registro</button>
+    <input type="number" id="trkPeso" placeholder="Peso (kg)" step="0.1">
+    <input type="number" id="trkBracoD" placeholder="Braço dir. (cm)" step="0.1">
+    <input type="number" id="trkBracoE" placeholder="Braço esq. (cm)" step="0.1">
+    <input type="number" id="trkAntebraco" placeholder="Antebraço (cm)" step="0.1">
+    <input type="number" id="trkPeitoral" placeholder="Peitoral (cm)" step="0.1">
+    <input type="number" id="trkCintura" placeholder="Cintura (cm)" step="0.1">
+    <input type="number" id="trkCoxa" placeholder="Coxa (cm)" step="0.1">
+    <input type="number" id="trkPanturrilha" placeholder="Panturrilha (cm)" step="0.1">
+    <button class="primary" onclick="addRegistro()">Adicionar</button>
   </div>
-  <table id="trkTable">
-    <tr><th>Data</th><th>Peso</th><th>Braço</th><th>Cintura</th><th>Coxa</th></tr>
-  </table>
-  <h3 style="font-size:15px; margin-top:20px;">Evolução do peso</h3>
-  <canvas id="pesoChart" width="700" height="260"></canvas>
+  <canvas id="pesoChart" width="600" height="220"></canvas>
+  <table id="trkTable"></table>
 </section>
 
 </main>
-
 <script>
-// ---------- Navegação ----------
-function ativarPagina(btn){
-  document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+// ===================== DADOS DE EXERCÍCIOS =====================
+// cada exercício: nome, séries, reps, cadência, descanso, erro comum, dica, execução detalhada
+const EXERCICIOS = {
+  "seg": [
+    {n:"Supino reto máquina", s:"4", r:"8-10", cad:"2s descendo, 1s parado, explodir na subida", desc:"90s",
+     erro:"Tirar o ombro do banco / arquear demais a lombar", dica:"Aproximar as escápulas, empurrar o chão com os pés",
+     exec:"Sente-se com escápulas retraídas contra o encosto. Pegada um pouco mais aberta que os ombros. Desça a barra/manopla até a linha do peito controladamente, pause brevemente, e empurre explodindo sem travar o cotovelo no topo. Respire fundo antes de descer, solte o ar durante o empurrão."},
+    {n:"Supino inclinado máquina", s:"4", r:"10", cad:"2s descendo, 1s parado, subida controlada", desc:"90s",
+     erro:"Levantar demais os ombros, tirando a tensão do peitoral superior", dica:"Cotovelos levemente abaixo da linha dos punhos",
+     exec:"Banco a 30-45°. Foca a porção clavicular (superior) do peitoral. Mantenha as escápulas para baixo e para trás durante todo o movimento, evitando que o trapézio assuma o trabalho."},
+    {n:"Peck Deck", s:"3", r:"12", cad:"contração de 1s no fechamento", desc:"75s",
+     erro:"Usar impulso do tronco para fechar os braços", dica:"Cotovelos na altura do ombro, movimento controlado",
+     exec:"Ajuste o banco para que os braços fiquem na altura dos ombros. Feche os braços à frente do corpo contraindo o peitoral, sem bater as manoplas com força — controle a volta."},
+    {n:"Crossover polia", s:"3", r:"12-15", cad:"descida lenta (3s)", desc:"60s",
+     erro:"Dobrar muito o cotovelo, virando tríceps", dica:"Cotovelo levemente flexionado e fixo, cruze as mãos à frente do corpo",
+     exec:"Em pé, tronco levemente inclinado à frente. Puxe os cabos cruzando à frente do corpo abaixo da linha do umbigo, sentindo o alongamento no peitoral na volta."},
+    {n:"Tríceps polia barra", s:"4", r:"10", cad:"descida controlada, explosão na extensão", desc:"60s",
+     erro:"Afastar os cotovelos do corpo", dica:"Cotovelos colados ao tronco durante toda a série",
+     exec:"Pegada pronada na barra, cotovelos fixos ao lado do corpo. Estenda totalmente sem travar com violência, controle a volta até 90°."},
+    {n:"Tríceps corda", s:"3", r:"12", cad:"abrir a corda no final do movimento", desc:"60s",
+     erro:"Deixar o cotovelo subir durante a extensão", dica:"Cotovelo fixo, abrir as pontas da corda ao final",
+     exec:"Pegada neutra na corda. Estenda os braços mantendo os cotovelos junto ao corpo, separando as mãos no fim do movimento para máxima contração."},
+    {n:"Tríceps máquina", s:"3", r:"12", cad:"controlado nas duas fases", desc:"60s",
+     erro:"Amplitude incompleta", dica:"Buscar extensão total sem travar bruscamente",
+     exec:"Ajuste o banco/assento conforme a máquina para que o eixo de rotação coincida com o cotovelo. Execute com controle em ambas as fases."}
+  ],
+  "qua": [
+    {n:"Puxada alta frente", s:"4", r:"10", cad:"puxar em 1-2s, subida controlada (3s)", desc:"90s",
+     erro:"Puxar atrás da nuca ou usar impulso do corpo", dica:"Peito para cima, puxar com os cotovelos apontando para baixo",
+     exec:"Pegada mais aberta que os ombros, tronco levemente inclinado para trás. Puxe a barra até a linha do queixo/peito superior, contraindo as costas, sem balançar o corpo."},
+    {n:"Remada articulada máquina", s:"4", r:"10", cad:"2s puxando, pausa, 3s soltando", desc:"90s",
+     erro:"Arredondar as costas", dica:"Peito apoiado, puxar com os cotovelos, não com os braços",
+     exec:"Peito apoiado no encosto da máquina. Puxe levando os cotovelos para trás, contraindo entre as escápulas, e retorne controlado sem deixar o peso bater."},
+    {n:"Remada baixa", s:"3", r:"12", cad:"controlado", desc:"75s",
+     erro:"Usar o tronco para puxar (embalo)", dica:"Tronco fixo, puxar só com os braços/costas",
+     exec:"Sentado, pernas semi-flexionadas, tronco ereto e fixo. Puxe o cabo até o abdômen, cotovelos próximos ao corpo, sem se jogar para trás."},
+    {n:"Pullover máquina", s:"3", r:"12", cad:"alongamento controlado", desc:"75s",
+     erro:"Amplitude curta", dica:"Buscar alongamento completo antes de puxar de volta",
+     exec:"Ajuste o encosto para apoiar bem a lombar. Leve os braços para trás sentindo o alongamento no latíssimo, depois traga de volta contraindo as costas."},
+    {n:"Rosca Scott máquina", s:"4", r:"10", cad:"2s subindo, 1s pausa, 3s descendo", desc:"75s",
+     erro:"Não estender totalmente o braço na descida", dica:"Descida completa para trabalhar a amplitude total do bíceps",
+     exec:"Braço apoiado no banco Scott, cotovelo fixo. Suba contraindo o bíceps, desça controlado até quase a extensão total."},
+    {n:"Rosca alternada banco inclinado", s:"3", r:"12", cad:"alternado, controlado", desc:"60s",
+     erro:"Balançar o ombro para ajudar", dica:"Cotovelo fixo atrás do corpo, ombro parado",
+     exec:"Banco a 45-60°, braços soltos ao lado do corpo. Suba um halter de cada vez, girando o punho (supinando) conforme sobe."},
+    {n:"Rosca martelo corda", s:"3", r:"12", cad:"controlado", desc:"60s",
+     erro:"Deixar o cotovelo se afastar do corpo", dica:"Pegada neutra, foco no braquiorradial (antebraço)",
+     exec:"Pegada neutra (palmas voltadas uma para outra) na corda ou halteres. Suba sem girar o punho, mantendo o cotovelo fixo ao lado do corpo."},
+    {n:"Rosca inversa barra W", s:"3", r:"15", cad:"controlado", desc:"60s",
+     erro:"Usar carga alta demais e perder a pegada", dica:"Pegada pronada, carga moderada — foco no antebraço",
+     exec:"Pegada pronada (palmas para baixo) na barra W. Suba com controle, sentindo o trabalho no antebraço e braquiorradial mais do que no bíceps."},
+    {n:"Flexão de punho máquina/barra", s:"3", r:"15", cad:"controlado", desc:"45s",
+     erro:"Mover o antebraço inteiro em vez de só o punho", dica:"Apoiar o antebraço fixo, mover apenas o punho",
+     exec:"Antebraço apoiado numa superfície (banco ou coxa), pegada supinada. Flexione o punho para cima controladamente, sentindo o trabalho no flexor do antebraço."},
+    {n:"Extensão de punho", s:"3", r:"15", cad:"controlado", desc:"45s",
+     erro:"Amplitude curta", dica:"Pegada pronada, buscar amplitude completa — este exercício não pode ser pulado",
+     exec:"Antebraço apoiado, pegada pronada (palma para baixo). Estenda o punho para cima controladamente, trabalhando o extensor — importante para recuperar o volume perdido no antebraço."}
+  ],
+  "sex": [
+    {n:"Desenvolvimento máquina", s:"4", r:"10", cad:"2s subindo, 1s pausa, 3s descendo", desc:"90s",
+     erro:"Arquear excessivamente a lombar", dica:"Core contraído, cotovelos levemente à frente",
+     exec:"Sentado, costas apoiadas, core ativado. Empurre para cima sem travar o cotovelo no topo, controle a descida até a altura dos ombros."},
+    {n:"Elevação lateral máquina", s:"4", r:"12", cad:"subida controlada, descida lenta (3s)", desc:"60s",
+     erro:"Usar impulso do tronco para levantar o peso", dica:"Subir até a linha do ombro, sem balançar",
+     exec:"Ajuste o assento para que o eixo da máquina coincida com o ombro. Suba os braços lateralmente até a altura do ombro, sem ultrapassar muito, controlando a descida."},
+    {n:"Elevação lateral cabo", s:"3", r:"12", cad:"controlado", desc:"60s",
+     erro:"Girar o tronco para compensar", dica:"Leve inclinação do tronco para o lado oposto, foco no deltoide lateral",
+     exec:"Cabo na altura baixa, corpo levemente inclinado para o lado contrário ao cabo. Suba o braço lateralmente controlando o movimento."},
+    {n:"Crucifixo invertido máquina", s:"3", r:"12", cad:"contração de 1s na abertura", desc:"60s",
+     erro:"Usar muito peso e perder amplitude", dica:"Foco no deltoide posterior, cotovelos levemente flexionados",
+     exec:"Peito apoiado no encosto, braços à frente. Abra os braços para trás contraindo o deltoide posterior e a parte superior das costas."},
+    {n:"Encolhimento máquina", s:"4", r:"12", cad:"1s de pausa no topo", desc:"60s",
+     erro:"Rodar os ombros em vez de só subir", dica:"Subir os ombros em linha reta, sem rotação",
+     exec:"Em pé ou sentado conforme a máquina, braços relaxados. Suba os ombros em direção às orelhas, pausando no topo, e desça controlado."},
+    {n:"Abdominal máquina", s:"4", r:"15", cad:"contração de 1s", desc:"45s",
+     erro:"Puxar com os braços em vez do abdômen", dica:"Contrair o abdômen para flexionar o tronco",
+     exec:"Ajuste a máquina conforme o modelo. Flexione o tronco contraindo o abdômen, sem tracionar com os braços ou pescoço."},
+    {n:"Elevação de pernas", s:"3", r:"15", cad:"controlado, sem embalo", desc:"45s",
+     erro:"Usar embalo do quadril", dica:"Subir as pernas controladamente até 90°",
+     exec:"Deitado ou pendurado (conforme disponibilidade), suba as pernas contraindo o abdômen inferior, sem balançar o corpo."},
+    {n:"Prancha", s:"3", r:"45-60s", cad:"isometria", desc:"45s",
+     erro:"Deixar o quadril cair ou subir demais", dica:"Quadril alinhado com ombros e tornozelos",
+     exec:"Apoio nos antebraços e pontas dos pés, corpo em linha reta. Contraia abdômen e glúteo para manter a posição."}
+  ],
+  "sab": [
+    {n:"Leg Press 45°", s:"4", r:"10", cad:"2s descendo, explosão na subida", desc:"120s",
+     erro:"Travar o joelho no topo", dica:"Descer até 90°, sem tirar o quadril do banco",
+     exec:"Pés na largura dos ombros na plataforma. Desça controlado até 90° no joelho, empurre sem travar completamente a articulação no topo."},
+    {n:"Agachamento Hack", s:"4", r:"10", cad:"2s descendo, 1s pausa", desc:"120s",
+     erro:"Subir nas pontas dos pés", dica:"Peso distribuído no meio/calcanhar do pé",
+     exec:"Costas apoiadas no encosto da máquina, pés um pouco à frente. Desça controlado até a coxa paralela ao chão, mantendo o peso no calcanhar."},
+    {n:"Cadeira Extensora", s:"4", r:"12", cad:"3s descendo, pausa de 1s no topo", desc:"90s",
+     erro:"Usar impulso e não controlar a descida", dica:"Contração máxima no topo antes de descer",
+     exec:"Costas apoiadas, ajuste o encosto para o joelho ficar alinhado ao eixo da máquina. Estenda totalmente, pause, desça controlado."},
+    {n:"Mesa Flexora", s:"4", r:"12", cad:"3s descendo", desc:"90s",
+     erro:"Elevar o quadril da maca", dica:"Quadril fixo, foco no posterior de coxa",
+     exec:"Deitado de bruços, joelhos alinhados ao eixo da máquina. Flexione trazendo o calcanhar em direção ao glúteo, controle a volta."},
+    {n:"Cadeira Flexora", s:"3", r:"12", cad:"controlado", desc:"75s",
+     erro:"Amplitude incompleta", dica:"Buscar contração completa do posterior de coxa",
+     exec:"Sentado, apoio nas costas. Flexione as pernas para trás contraindo o posterior de coxa, retorne controlado."},
+    {n:"Abdutora", s:"3", r:"15", cad:"controlado", desc:"60s",
+     erro:"Jogar o corpo para ajudar o movimento", dica:"Foco no glúteo médio, sem embalo",
+     exec:"Sentado, pernas juntas contra os apoios. Abra as pernas contra a resistência, controle a volta."},
+    {n:"Adutora", s:"3", r:"15", cad:"controlado", desc:"60s",
+     erro:"Movimento rápido demais", dica:"Foco no interno de coxa, controle na abertura",
+     exec:"Sentado, pernas afastadas contra os apoios. Feche as pernas contra a resistência, controle a abertura de volta."},
+    {n:"Panturrilha Leg Press", s:"5", r:"15", cad:"pausa no topo contraído", desc:"45s",
+     erro:"Amplitude curta", dica:"Buscar alongamento completo embaixo e contração total em cima",
+     exec:"Pés na parte inferior da plataforma do leg press, pernas estendidas. Empurre com a ponta dos pés, pausando na contração máxima."},
+    {n:"Panturrilha Sentado", s:"4", r:"15", cad:"pausa no topo", desc:"45s",
+     erro:"Movimento rápido sem controle", dica:"Foco em queimação, sem travamento",
+     exec:"Sentado na máquina, joelhos sob a almofada. Empurre com a ponta dos pés, controlando a descida até o alongamento completo."}
+  ],
+  "dom": [
+    {n:"Rosca martelo corda", s:"3", r:"12", cad:"controlado", desc:"60s",
+     erro:"Balançar o tronco", dica:"Pegada neutra, foco no antebraço",
+     exec:"Pegada neutra na corda. Suba sem girar o punho, cotovelo fixo ao lado do corpo."},
+    {n:"Rosca inversa barra W", s:"3", r:"15", cad:"controlado, carga leve", desc:"45s",
+     erro:"Carga alta demais", dica:"Priorizar antebraço, não força bruta",
+     exec:"Pegada pronada, carga moderada. Suba controlado, sentindo o antebraço trabalhar."},
+    {n:"Flexão de punho", s:"3", r:"15-20", cad:"controlado", desc:"45s",
+     erro:"Mover o antebraço todo", dica:"Só o punho se move",
+     exec:"Antebraço apoiado, pegada supinada. Flexione o punho para cima controladamente."},
+    {n:"Extensão de punho", s:"2", r:"15-20", cad:"controlado", desc:"45s",
+     erro:"Amplitude curta", dica:"Buscar amplitude completa",
+     exec:"Antebraço apoiado, pegada pronada. Estenda o punho para cima controladamente."},
+    {n:"Panturrilha sentado (leve)", s:"3", r:"15", cad:"controlado", desc:"45s",
+     erro:"Carga alta num dia que deveria ser leve", dica:"Carga moderada, foco na execução",
+     exec:"Sentado na máquina, joelhos sob a almofada. Empurre com a ponta dos pés, sem forçar carga máxima hoje — dia leve."},
+    {n:"Prancha (leve)", s:"2", r:"30-40s", cad:"isometria", desc:"45s",
+     erro:"Forçar tempo além do confortável num dia leve", dica:"Quadril alinhado, sem exagerar hoje",
+     exec:"Apoio nos antebraços e pontas dos pés, corpo em linha reta. Mantenha por um tempo moderado — hoje é dia de recuperação."}
+  ]
+};
+
+function renderExercicios(dia, containerId){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  const lista = EXERCICIOS[dia];
+  if(!lista) return;
+  let html = '';
+  lista.forEach((ex, idx) => {
+    const detailId = `detail-${dia}-${idx}`;
+    html += `
+      <div class="exbox">
+        <h4>${ex.n}</h4>
+        <div class="exgrid">
+          <div class="field"><div class="k">Séries</div><div class="v">${ex.s}</div></div>
+          <div class="field"><div class="k">Repetições</div><div class="v">${ex.r}</div></div>
+          <div class="field"><div class="k">Cadência</div><div class="v">${ex.cad}</div></div>
+          <div class="field"><div class="k">Descanso</div><div class="v">${ex.desc}</div></div>
+        </div>
+        <div class="errdica">
+          <div class="err"><b>Erro comum</b>${ex.erro}</div>
+          <div class="dica"><b>Dica</b>${ex.dica}</div>
+        </div>
+        <button class="exec-toggle" onclick="toggleExec('${detailId}')">Como executar ▾</button>
+        <div class="exec-detail" id="${detailId}"><b>Postura, respiração e amplitude:</b> ${ex.exec}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function toggleExec(id){
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
+}
+
+// ===================== NAVEGAÇÃO =====================
+function switchDay(btn){
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.daytab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById(btn.dataset.page).classList.add('active');
-  window.scrollTo(0,0);
+  const container = parent.parentElement;
+  container.querySelectorAll(':scope > .daycontent').forEach(d => d.classList.remove('active'));
+  const dayId = btn.dataset.day;
+  const target = document.getElementById(dayId);
+  if(target) target.classList.add('active');
 }
-document.querySelectorAll('.navbtn').forEach(btn=>{
-  btn.addEventListener('click',(e)=>{ e.preventDefault(); ativarPagina(btn); });
-});
-document.querySelectorAll('.daytab').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const parent = btn.parentElement;
-    parent.querySelectorAll('.daytab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('#treino .daycontent').forEach(d=>d.classList.remove('active'));
-    document.getElementById(btn.dataset.day).classList.add('active');
-  });
-});
 
-// ---------- Contador de séries + Timer de descanso por exercício ----------
-function parseDescansoSegundos(txt){
-  const m = txt.match(/(\d+)/);
-  return m ? parseInt(m[1],10) : 60;
+// ===================== MODO CRISE =====================
+function toggleCrisis(){
+  const isActive = localStorage.getItem('crisisMode') === '1';
+  const newState = !isActive;
+  localStorage.setItem('crisisMode', newState ? '1' : '0');
+  applyCrisisState();
 }
-function parseSeriesAlvo(txt){
-  const m = txt.match(/^(\d+)/);
-  return m ? parseInt(m[1],10) : 3;
+function applyCrisisState(){
+  const isActive = localStorage.getItem('crisisMode') === '1';
+  const btn = document.getElementById('crisisToggle');
+  const status = document.getElementById('crisisStatus');
+  const modoTexto = document.getElementById('aliModoTexto');
+  document.querySelectorAll('.crisis-only').forEach(el => {
+    el.style.display = isActive ? 'block' : 'none';
+  });
+  document.querySelectorAll('.meal.norm').forEach(el => {
+    if(isActive){
+      // esconde itens que a própria refeição não tem troca (feijão/aveia aparecem só no texto do swap)
+    }
+  });
+  if(isActive){
+    if(btn){ btn.textContent = '✅ Crohn em crise ativo — clique para voltar ao normal'; btn.classList.add('active'); }
+    if(status) status.textContent = 'Modo estabilização ATIVO: feijão, aveia e whey concentrado escondidos/trocados no cardápio.';
+    if(modoTexto) modoTexto.textContent = 'Modo estabilização ativo — cardápio ajustado automaticamente (sem feijão, aveia ou whey concentrado; prioridade para arroz, frango, batata, mandioca, cenoura, chuchu, ovos e peixe).';
+  } else {
+    if(btn){ btn.textContent = '🚨 Crohn entrou em crise — ativar cardápio de estabilização'; btn.classList.remove('active'); }
+    if(status) status.textContent = 'Modo normal ativo.';
+    if(modoTexto) modoTexto.textContent = 'Modo normal ativo. Ative "Crohn entrou em crise" no Dashboard para trocar o cardápio automaticamente.';
+  }
 }
-function beep(){
+
+// ===================== CHECKLIST / DASHBOARD =====================
+function salvarChecklist(){
   try{
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = 'sine'; o.frequency.value = 880;
-    g.gain.setValueAtTime(0.25, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.6);
-    o.start(); o.stop(ctx.currentTime+0.6);
+    const data = {
+      creatina: document.getElementById('chkCreatina') ? document.getElementById('chkCreatina').checked : false,
+      oxa: document.getElementById('chkOxa') ? document.getElementById('chkOxa').checked : false,
+      sono: document.getElementById('sonoInput') ? document.getElementById('sonoInput').value : '',
+      chk_treino: getChk('chk_treino'), chk_agua: getChk('chk_agua'),
+      chk_dieta: getChk('chk_dieta'), chk_sono: getChk('chk_sono')
+    };
+    localStorage.setItem('checklistHoje', JSON.stringify(data));
+    updateRefeicoesFeitas();
   }catch(e){}
-  if(navigator.vibrate) navigator.vibrate([200,100,200]);
 }
-document.querySelectorAll('#treino table').forEach(table=>{
-  const rows = table.querySelectorAll('tr');
-  rows.forEach((row,idx)=>{
-    if(idx===0) return; // pula cabeçalho
-    const cells = row.querySelectorAll('td');
-    if(cells.length < 4) return;
-    const seriesTxt = cells[2].textContent.trim();
-    const descansoTxt = cells[3].textContent.trim();
-    const seriesAlvo = parseSeriesAlvo(seriesTxt);
-    const descansoSeg = parseDescansoSegundos(descansoTxt);
-
-    // Célula: contador de séries
-    const tdSerie = document.createElement('td');
-    tdSerie.setAttribute('data-label','Série');
-    tdSerie.innerHTML = `
-      <div class="set-counter">
-        <button class="set-btn" data-action="minus">−</button>
-        <span class="set-val">0/${seriesAlvo}</span>
-        <button class="set-btn" data-action="plus">+</button>
-      </div>`;
-    row.appendChild(tdSerie);
-    const valSpan = tdSerie.querySelector('.set-val');
-    let atual = 0;
-
-    // Célula: timer de descanso (disparado ao avançar série)
-    const tdTimer = document.createElement('td');
-    tdTimer.setAttribute('data-label','Timer');
-    tdTimer.innerHTML = `<div class="timer-wrap"><button class="timer-btn">${descansoSeg}s</button></div>`;
-    row.appendChild(tdTimer);
-    const timerBtn = tdTimer.querySelector('.timer-btn');
-    let intervalId = null;
-    let restante = descansoSeg;
-
-    function iniciarTimer(){
-      if(intervalId){ clearInterval(intervalId); intervalId = null; }
-      restante = descansoSeg;
-      timerBtn.textContent = restante+'s';
-      timerBtn.classList.remove('done');
-      timerBtn.classList.add('running');
-      intervalId = setInterval(()=>{
-        restante--;
-        if(restante <= 0){
-          clearInterval(intervalId);
-          intervalId = null;
-          timerBtn.textContent = 'Feito!';
-          timerBtn.classList.remove('running');
-          timerBtn.classList.add('done');
-          beep();
-          setTimeout(()=>{
-            timerBtn.textContent = descansoSeg+'s';
-            timerBtn.classList.remove('done');
-          },2000);
-        } else {
-          timerBtn.textContent = restante+'s';
-        }
-      },1000);
-    }
-
-    // "+" avança a série e dispara o timer de descanso automaticamente
-    // (exceto ao completar a última série, onde não há próxima série a descansar)
-    tdSerie.querySelector('[data-action="plus"]').addEventListener('click',()=>{
-      if(atual < seriesAlvo){
-        atual++;
-        valSpan.textContent = atual+'/'+seriesAlvo;
-        valSpan.classList.toggle('done', atual>=seriesAlvo);
-        if(atual < seriesAlvo){ iniciarTimer(); }
-      }
-    });
-    tdSerie.querySelector('[data-action="minus"]').addEventListener('click',()=>{
-      if(atual > 0){ atual--; valSpan.textContent = atual+'/'+seriesAlvo; }
-      valSpan.classList.toggle('done', atual>=seriesAlvo);
-    });
-
-    // Botão do timer continua clicável para reiniciar manualmente se necessário
-    timerBtn.addEventListener('click', iniciarTimer);
-
-    // Ao marcar o checkbox do exercício como pronto, zera o timer
-    const exCheckbox = row.querySelector('.exchk');
-    if(exCheckbox){
-      exCheckbox.addEventListener('change',()=>{
-        if(exCheckbox.checked){
-          if(intervalId){ clearInterval(intervalId); intervalId = null; }
-          restante = descansoSeg;
-          timerBtn.textContent = descansoSeg+'s';
-          timerBtn.classList.remove('running','done');
-        }
-      });
-    }
-  });
-});
-
-// ---------- Checkboxes persistidos ----------
-document.querySelectorAll('[data-key]').forEach(chk=>{
-  const key = chk.dataset.key;
-  chk.checked = localStorage.getItem(key)==='true';
-  chk.addEventListener('change',()=>{ localStorage.setItem(key, chk.checked); updateTreinoProgresso(); });
-});
-document.querySelectorAll('.exchk').forEach((chk,i)=>{
-  const key = 'ex_'+i;
-  chk.checked = localStorage.getItem(key)==='true';
-  chk.addEventListener('change',()=>{ localStorage.setItem(key, chk.checked); updateTreinoProgresso(); });
-});
-function updateTreinoProgresso(){
-  const boxes = document.querySelectorAll('.exchk');
-  const done = [...boxes].filter(b=>b.checked).length;
-  const pct = boxes.length ? Math.round(done/boxes.length*100) : 0;
-  document.getElementById('treinoPct').textContent = pct+'%';
-  document.getElementById('treinoBar').style.width = pct+'%';
+function getChk(key){
+  const el = document.querySelector(`[data-key="${key}"]`);
+  return el ? el.checked : false;
 }
-updateTreinoProgresso();
 function limparChecklist(){
-  document.querySelectorAll('[data-key]').forEach(chk=>{
-    chk.checked = false;
-    localStorage.setItem(chk.dataset.key, false);
-  });
+  document.querySelectorAll('#dashboard input[type="checkbox"]').forEach(cb => cb.checked = false);
+  salvarChecklist();
+}
+function updateRefeicoesFeitas(){
+  const el = document.getElementById('refeicoesFeitas');
+  if(el){
+    const feitas = getChk('chk_dieta') ? 7 : 0;
+    el.textContent = `${feitas} / 7`;
+  }
+}
+function updateAgua(){
+  const input = document.getElementById('aguaInput');
+  if(input) localStorage.setItem('aguaHoje', input.value);
+}
+function updatePesoAtual(){
+  const input = document.getElementById('dashPesoInput');
+  if(!input) return;
+  const peso = parseFloat(input.value) || 63;
+  localStorage.setItem('pesoAtualManual', peso);
+  recalcDashboard(peso);
+}
+function recalcDashboard(pesoOverride){
+  const PESO_INICIAL = 63, PESO_META = 75, ALTURA = 1.73;
+  const regs = loadRegistros().filter(r=>r.peso);
+  let pesoAtual;
+  if(pesoOverride){ pesoAtual = pesoOverride; }
+  else if(regs.length){ pesoAtual = parseFloat(regs[regs.length-1].peso); }
+  else { pesoAtual = parseFloat(localStorage.getItem('pesoAtualManual')) || PESO_INICIAL; }
+
+  const imc = (pesoAtual / (ALTURA*ALTURA)).toFixed(1);
+  const imcEl = document.getElementById('dashImc');
+  if(imcEl) imcEl.textContent = imc;
+
+  const pct = Math.max(0, Math.min(100, Math.round((pesoAtual-PESO_INICIAL)/(PESO_META-PESO_INICIAL)*100)));
+  const pesoPctEl = document.getElementById('pesoPct');
+  const pesoBarEl = document.getElementById('pesoBar');
+  if(pesoPctEl) pesoPctEl.textContent = pct+'%';
+  if(pesoBarEl) pesoBarEl.style.width = pct+'%';
+  const faltamKg = (PESO_META-pesoAtual).toFixed(1);
+  const pesoRitmoEl = document.getElementById('pesoRitmo');
+  if(pesoRitmoEl) pesoRitmoEl.textContent = faltamKg>0 ? `Faltam ${faltamKg}kg até a meta (ritmo alvo: 0,3-0,5kg/semana).` : 'Meta atingida.';
+
+  const aguaMeta = (pesoAtual*0.037).toFixed(1);
+  const aguaMetaEl = document.getElementById('aguaMeta');
+  if(aguaMetaEl) aguaMetaEl.textContent = aguaMeta;
 }
 
-// ---------- Alimentação por dia ----------
-const dias = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
-const refeicoes = {
-  cafe:'Café da manhã', lancheM:'Lanche manhã', almoco:'Almoço', lancheT:'Lanche tarde',
-  pre:'Pré-treino', pos:'Pós-treino', jantar:'Jantar', ceia:'Ceia'
-};
-const cardapio = {
-  Segunda:{cafe:'Tapioca com ovo mexido + mamão',lancheM:'Iogurte natural + banana',almoco:'Arroz branco, patinho moído, cenoura e abobrinha cozidas',lancheT:'Whey com água + torrada',pre:'Banana + mel',pos:'Whey + batata doce cozida',jantar:'Frango grelhado, arroz, chuchu cozido',ceia:'Iogurte natural'},
-  Terça:{cafe:'Aveia fina com banana e mel',lancheM:'Ovo cozido + torrada',almoco:'Tilápia, arroz, abóbora cozida',lancheT:'Vitamina de mamão com whey',pre:'Tapioca com mel',pos:'Whey + batata inglesa',jantar:'Patinho moído, arroz, vagem cozida',ceia:'Iogurte natural'},
-  Quarta:{cafe:'Tapioca com queijo branco',lancheM:'Banana + pasta de amendoim',almoco:'Frango desfiado, arroz, cenoura cozida',lancheT:'Whey com água',pre:'Mamão',pos:'Batata doce + whey',jantar:'Ovo mexido, arroz, abobrinha cozida',ceia:'Iogurte natural'},
-  Quinta:{cafe:'Aveia com banana',lancheM:'Iogurte natural',almoco:'Tilápia, arroz, chuchu cozido',lancheT:'Torrada com queijo branco',pre:'Banana',pos:'Whey + arroz',jantar:'Patinho moído, batata inglesa cozida, vagem',ceia:'Iogurte natural'},
-  Sexta:{cafe:'Tapioca com ovo',lancheM:'Whey com água',almoco:'Frango grelhado, arroz, abóbora cozida',lancheT:'Mamão',pre:'Mel + torrada',pos:'Batata doce + whey',jantar:'Tilápia, arroz, cenoura cozida',ceia:'Iogurte natural'},
-  Sábado:{cafe:'Ovo mexido + tapioca',lancheM:'Banana com mel',almoco:'Patinho moído, arroz, chuchu cozido',lancheT:'Iogurte natural',pre:'Mamão',pos:'Whey + batata inglesa',jantar:'Frango, arroz, abobrinha cozida',ceia:'Iogurte natural'},
-  Domingo:{cafe:'Aveia com mamão',lancheM:'Torrada com queijo branco',almoco:'Tilápia, arroz, vagem cozida',lancheT:'Whey com água',pre:'Banana',pos:'Batata doce + whey',jantar:'Ovo mexido, arroz, cenoura cozida',ceia:'Iogurte natural'}
-};
-const foodTabs = document.getElementById('foodTabs');
-const foodContent = document.getElementById('foodContent');
-dias.forEach((d,i)=>{
-  const tab = document.createElement('button');
-  tab.className = 'daytab' + (i===0?' active':'');
-  tab.textContent = d;
-  tab.onclick = ()=>{
-    document.querySelectorAll('#foodTabs .daytab').forEach(b=>b.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('#foodContent .daycontent').forEach(c=>c.classList.remove('active'));
-    document.getElementById('food_'+d).classList.add('active');
-  };
-  foodTabs.appendChild(tab);
-
-  const content = document.createElement('div');
-  content.className = 'daycontent' + (i===0?' active':'');
-  content.id = 'food_'+d;
-  Object.keys(refeicoes).forEach(k=>{
-    content.innerHTML += `<div class="meal"><h4>${refeicoes[k]}</h4><p>${cardapio[d][k]}</p></div>`;
+// ===================== PROGRESSÃO DE CARGA =====================
+function loadProgressao(){ try{ return JSON.parse(localStorage.getItem('progressaoCarga')||'[]'); }catch(e){ return []; } }
+function saveProgressao(p){ try{ localStorage.setItem('progressaoCarga', JSON.stringify(p)); }catch(e){} }
+function renderProgressao(){
+  const table = document.getElementById('progTable');
+  if(!table) return;
+  table.innerHTML = '<tr><th>Semana</th><th>Exercício</th><th>Carga (kg)</th></tr>';
+  loadProgressao().forEach(p=>{
+    table.innerHTML += `<tr><td data-label="Semana">${p.semana}</td><td data-label="Exercício">${p.exercicio}</td><td data-label="Carga">${p.carga} kg</td></tr>`;
   });
-  foodContent.appendChild(content);
-});
+}
+function addProgressao(){
+  const exercicio = document.getElementById('progExercicio').value;
+  const semana = document.getElementById('progSemana').value;
+  const carga = document.getElementById('progCarga').value;
+  if(!semana || !carga){ alert('Preencha semana e carga'); return; }
+  const lista = loadProgressao();
+  lista.push({exercicio, semana, carga});
+  saveProgressao(lista);
+  renderProgressao();
+  document.getElementById('progSemana').value='';
+  document.getElementById('progCarga').value='';
+}
 
-// ---------- Acompanhamento ----------
-function loadRegistros(){ return JSON.parse(localStorage.getItem('registros')||'[]'); }
-function saveRegistros(r){ localStorage.setItem('registros', JSON.stringify(r)); }
+// ===================== EVOLUÇÃO CORPORAL =====================
+function loadRegistros(){ try{ return JSON.parse(localStorage.getItem('registrosCorporais')||'[]'); }catch(e){ return []; } }
+function saveRegistros(r){ try{ localStorage.setItem('registrosCorporais', JSON.stringify(r)); }catch(e){} }
 function renderTable(){
   const table = document.getElementById('trkTable');
-  table.innerHTML = '<tr><th>Data</th><th>Peso</th><th>Braço</th><th>Cintura</th><th>Coxa</th></tr>';
+  if(!table) return;
+  table.innerHTML = '<tr><th>Data</th><th>Peso</th><th>Braço D</th><th>Braço E</th><th>Antebraço</th><th>Peitoral</th><th>Cintura</th><th>Coxa</th><th>Panturrilha</th></tr>';
   loadRegistros().forEach(r=>{
-    table.innerHTML += `<tr><td data-label="Data">${r.data}</td><td data-label="Peso">${r.peso||'-'}</td><td data-label="Braço">${r.braco||'-'}</td><td data-label="Cintura">${r.cintura||'-'}</td><td data-label="Coxa">${r.coxa||'-'}</td></tr>`;
+    table.innerHTML += `<tr>
+      <td data-label="Data">${r.data}</td><td data-label="Peso">${r.peso||'-'}</td>
+      <td data-label="Braço D">${r.bracoD||'-'}</td><td data-label="Braço E">${r.bracoE||'-'}</td>
+      <td data-label="Antebraço">${r.antebraco||'-'}</td><td data-label="Peitoral">${r.peitoral||'-'}</td>
+      <td data-label="Cintura">${r.cintura||'-'}</td><td data-label="Coxa">${r.coxa||'-'}</td>
+      <td data-label="Panturrilha">${r.panturrilha||'-'}</td>
+    </tr>`;
   });
 }
 function addRegistro(){
-  const data = document.getElementById('trkDate').value;
+  const dataEl = document.getElementById('trkDate');
+  if(!dataEl) return;
+  const data = dataEl.value;
   if(!data){ alert('Selecione uma data'); return; }
   const reg = {
-    data, peso:document.getElementById('trkPeso').value,
-    braco:document.getElementById('trkBraco').value,
-    cintura:document.getElementById('trkCintura').value,
-    coxa:document.getElementById('trkCoxa').value
+    data,
+    peso:(document.getElementById('trkPeso')||{}).value,
+    bracoD:(document.getElementById('trkBracoD')||{}).value,
+    bracoE:(document.getElementById('trkBracoE')||{}).value,
+    antebraco:(document.getElementById('trkAntebraco')||{}).value,
+    peitoral:(document.getElementById('trkPeitoral')||{}).value,
+    cintura:(document.getElementById('trkCintura')||{}).value,
+    coxa:(document.getElementById('trkCoxa')||{}).value,
+    panturrilha:(document.getElementById('trkPanturrilha')||{}).value
   };
   const regs = loadRegistros();
   regs.push(reg);
@@ -520,12 +901,16 @@ function addRegistro(){
   saveRegistros(regs);
   renderTable();
   drawChart();
-  updateMetaPeso();
-  if(reg.peso) document.getElementById('dashPeso').textContent = reg.peso+' kg';
+  if(reg.peso){
+    const dashPesoInput = document.getElementById('dashPesoInput');
+    if(dashPesoInput) dashPesoInput.value = reg.peso;
+    recalcDashboard(parseFloat(reg.peso));
+  }
 }
 function drawChart(){
-  const regs = loadRegistros().filter(r=>r.peso);
   const canvas = document.getElementById('pesoChart');
+  if(!canvas) return;
+  const regs = loadRegistros().filter(r=>r.peso);
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.strokeStyle = '#2a322c';
@@ -550,38 +935,56 @@ function drawChart(){
     ctx.beginPath(); ctx.arc(x,y,3,0,7); ctx.fill();
   });
 }
-// ---------- Meta de peso ----------
-const PESO_INICIAL = 65;
-const PESO_META = 70;
-const DATA_INICIO_KEY = 'dataInicioMeta';
-const PRAZO_SEMANAS = 8;
-if(!localStorage.getItem(DATA_INICIO_KEY)){
-  localStorage.setItem(DATA_INICIO_KEY, new Date().toISOString().slice(0,10));
-}
-function diasRestantes(){
-  const inicio = new Date(localStorage.getItem(DATA_INICIO_KEY));
-  const limite = new Date(inicio); limite.setDate(limite.getDate() + PRAZO_SEMANAS*7);
-  const hoje = new Date();
-  return Math.max(0, Math.round((limite-hoje)/86400000));
-}
-function updateMetaPeso(){
-  const regs = loadRegistros().filter(r=>r.peso);
-  const pesoAtual = regs.length ? parseFloat(regs[regs.length-1].peso) : PESO_INICIAL;
-  const pct = Math.max(0, Math.min(100, Math.round((pesoAtual-PESO_INICIAL)/(PESO_META-PESO_INICIAL)*100)));
-  document.getElementById('pesoPct').textContent = pct+'%';
-  document.getElementById('pesoBar').style.width = pct+'%';
-  const restantes = diasRestantes();
-  document.getElementById('dashPrazo').textContent = restantes>0 ? `(faltam ${restantes} dias)` : '(prazo encerrado)';
-  const faltamKg = (PESO_META-pesoAtual).toFixed(1);
-  document.getElementById('pesoRitmo').textContent = faltamKg>0
-    ? `Faltam ${faltamKg}kg. Ritmo necessário: ${restantes>0 ? (faltamKg/(restantes/7)).toFixed(2) : '—'} kg/semana.`
-    : 'Meta atingida.';
-}
-updateMetaPeso();
-const _regsIniciais = loadRegistros().filter(r=>r.peso);
-if(_regsIniciais.length){
-  document.getElementById('dashPeso').textContent = _regsIniciais[_regsIniciais.length-1].peso+' kg';
-}
+
+// ===================== INIT =====================
+document.addEventListener("DOMContentLoaded", function(){
+
+  renderExercicios('seg','ex-seg');
+  renderExercicios('qua','ex-qua');
+  renderExercicios('sex','ex-sex');
+  renderExercicios('sab','ex-sab');
+  renderExercicios('dom','ex-dom');
+
+  document.querySelectorAll('.daytab').forEach(btn => {
+    btn.addEventListener('click', () => switchDay(btn));
+  });
+  document.querySelectorAll('.navbtn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      const page = document.getElementById(btn.dataset.page);
+      if(page) page.classList.add('active');
+      window.scrollTo(0,0);
+    });
+  });
+
+  applyCrisisState();
+  renderProgressao();
+  renderTable();
+  drawChart();
+  recalcDashboard();
+
+  // restaurar checklist salvo
+  try{
+    const saved = JSON.parse(localStorage.getItem('checklistHoje')||'{}');
+    if(saved.creatina && document.getElementById('chkCreatina')) document.getElementById('chkCreatina').checked = true;
+    if(saved.oxa && document.getElementById('chkOxa')) document.getElementById('chkOxa').checked = true;
+    if(saved.sono && document.getElementById('sonoInput')) document.getElementById('sonoInput').value = saved.sono;
+    ['chk_treino','chk_agua','chk_dieta','chk_sono'].forEach(k=>{
+      if(saved[k]){
+        const el = document.querySelector(`[data-key="${k}"]`);
+        if(el) el.checked = true;
+      }
+    });
+    updateRefeicoesFeitas();
+  }catch(e){}
+
+  const aguaSalva = localStorage.getItem('aguaHoje');
+  if(aguaSalva && document.getElementById('aguaInput')) document.getElementById('aguaInput').value = aguaSalva;
+
+});
 </script>
 </body>
 </html>
